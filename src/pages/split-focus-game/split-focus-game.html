@@ -1,0 +1,23 @@
+<ion-header>
+</ion-header>
+
+
+<ion-content padding no-bounce>
+  <img id="shape1" class="leftImage" src={{leftSource}} hidden="true" width={{getShapeDimension()}} height={{getShapeDimension()}}>
+  <img id="shape2" class="rightImage" src={{rightSource}} hidden="true" width={{getShapeDimension()}} height={{getShapeDimension()}}>
+  <label class="sCounter">{{getTimesLeft()}}</label>
+  <label class="sMilli">{{getMilli()}}ms</label>
+  <label id="countdown" class="sCountdown" hidden="true">{{getCountDown()}}</label>
+  <img id="x" class="xCheck" hidden="true" src="assets/imgs/x.svg" width={{getXCheckWidth()}} height={{getXCheckHeight()}}>
+  <img id="check" class="xCheck" hidden="true" src="assets/imgs/check.svg" width={{getXCheckWidth()}} height={{getXCheckHeight()}}>
+  <ion-grid class="buttons">
+    <ion-row>
+      <ion-col col-6>
+          <button ion-button round full="true" class="leftButton" (click)="clicked('yes')">Yes</button>
+      </ion-col>
+      <ion-col col-6>
+          <button ion-button round full="true" class="rightButton" (click)="clicked('no')">No</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

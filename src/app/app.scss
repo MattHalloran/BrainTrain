@@ -1,0 +1,28 @@
+// http://ionicframework.com/docs/theming/
+//Matt Halloran
+//12-26-17
+.scroll-content {
+  overflow-y: auto !important;
+}
+
+.toolbar-background {
+  background-color: map-get($colors, primary);
+}
+
+.toolbar-content {
+  width: 100%;
+  text-align: center;
+}
+
+.toolbar-content-md {
+  hideBackButton: true;
+}
+
+ion-header ion-icon.back-button-icon.icon,
+ion-header span.back-button-text.back-button-text-ios {
+   color: #000000;
+}
+
+.back-button-md {
+  display:none !important;
+}

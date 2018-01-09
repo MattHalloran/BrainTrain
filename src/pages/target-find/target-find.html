@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Target Find</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <p>Dividing your attention is important in many situations. Target
+    Find is designed to build your brain's ability to simultaneously track
+    multiple objects.<br><br></p>
+
+  <h4 style="text-align:center">How to play<br></h4>
+
+  <p>A group of objects will appear on the screen. Your job is to track
+    where these objects are at all times. When all of the objects on the screen
+    stop moving, touch the objects that appeared first.</p>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button round full=true (click)="start('12')">World 1 Slow</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button round full=true (click)="start('11')">World 1 Fast</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button round full=true (click)="start('22')">World 2 Slow</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button round full=true (click)="start('21')">World 2 Fast</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

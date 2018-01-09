@@ -1,0 +1,36 @@
+<!--Matt Halloran
+12-25-17-->
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title range-left>Bird's Eye</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <p>Bird's Eye is designed to improve your visual precision,
+  so you can remember what you see more quickly and accurately.
+  The game gradually gets harder the farther you progress.<br><br></p>
+
+  <h4 style="text-align:center">How to play<br></h4>
+
+  <p>A group of birds will flash on the screen. One bird will look different
+  than the others. When the birds disappear, select the position on the screen where
+  the different bird was located.</p>
+
+  <ion-content padding>
+      <form #v="ngForm">
+          <ion-item>
+              <ion-range type="number" [(ngModel)]="myRange" name="myRange"
+               min = "1" max = "10" step = "1" snaps = "true">
+                  <ion-label range-left>Easy</ion-label>
+                  <ion-label range-right>Hard</ion-label>
+              </ion-range>
+          </ion-item>
+      </form>
+      <button ion-button round full="true" (click)="start()"> Start Level {{myRange}} </button>
+  </ion-content>
+</ion-content>

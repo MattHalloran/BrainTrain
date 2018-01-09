@@ -1,0 +1,61 @@
+page-target-find-game {
+
+}
+
+.targetBackground1{
+    background-image: url('../assets/imgs/target-find-game/jungle.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.targetBackground2{
+    background-image: url('../assets/imgs/target-find-game/desert.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.object {
+  //background: transparent;
+  width: 50px;
+  height: 50px;
+  //display: block;
+  position: absolute;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.xCheck {
+  position: absolute;
+  display: block;
+  top: 25%;
+  left: 25%;
+}
+
+.counter {
+  position: relative;
+  top: -10px;
+  font-size: 5em;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+.objectNum {
+  position: relative;
+  vertical-align: top;
+  font-size: 2em;
+  color: #ffffff !important;
+}
+
+.countdown {
+  position: absolute;
+  font-size: 12em;
+  color: #ffffff !important;
+  left: 0px;
+  top: 20%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}

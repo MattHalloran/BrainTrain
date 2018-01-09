@@ -1,0 +1,115 @@
+page-birds-eye-game {
+}
+// condense this later
+.birdBackground1{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.birdBackground2{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground3{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground4{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel4.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground5{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.birdBackground6{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel6.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground7{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel7.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground8{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel8.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground9{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel9.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.birdBackground10{
+    background-image: url('../assets/imgs/birds-eye-game/BirdsEyeLevel10.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.bird {
+  //background: transparent;
+  width: 100px;
+  height: 100px;
+  //display: block;
+  position: absolute;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.xCheck {
+  position: absolute;
+  display: block;
+  top: 25%;
+  left: 25%;
+}
+
+.bCounter {
+  position: relative;
+  top: -10px;
+  font-size: 5em;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+.bMilli {
+  position: relative;
+  vertical-align: top;
+  font-size: 2em;
+  color: #ffffff !important;
+}
+
+.bCountdown {
+  position: absolute;
+  font-size: 12em;
+  color: #ffffff !important;
+  left: 0px;
+  top: 20%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}

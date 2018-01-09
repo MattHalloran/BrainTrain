@@ -1,0 +1,38 @@
+.ion-ios-dumbbell,
+.ion-ios-dumbbell-outline,
+.ion-md-dumbbell {
+  //content: url(../assets/imgs/dumbbell.svg);
+  width: 24px;
+  height: 24px;//was 32
+}
+
+.activated {
+   background-color: color($colors, darkPrimary);
+}
+
+.tabs-ios {
+  a[aria-selected=false]{
+    .tab-button-icon[ng-reflect-name=dumbbell], .tab-button-icon[aria-label=dumbbell] {
+      content: url(../assets/imgs/dumbbell-whiteOpacity.png);
+    }
+  }
+ a[aria-selected=true] {
+    .tab-button-icon[ng-reflect-name=dumbbell], .tab-button-icon[aria-label=dumbbell] {
+      content: url(../assets/imgs/dumbbell-white.png);
+    }
+  }
+}
+
+.tabs-md {
+  a[aria-selected=false]{
+    .tab-button-icon[ng-reflect-name=dumbbell], .tab-button-icon[aria-label=dumbbell] {
+      content: url(../assets/imgs/dumbbell-whiteOpacity.png);
+    }
+  }
+
+ a[aria-selected=true] {
+    .tab-button-icon[ng-reflect-name=dumbbell], .tab-button-icon[aria-label=dumbbell] {
+      content: url(../assets/imgs/dumbbell-white.png);
+    }
+  }
+}

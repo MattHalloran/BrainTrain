@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Split Focus</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <p>Split focus is designed to help your brain focus on certain details,
+    while filtering out unimportant information.The game gradually gets
+    harder the farther you progress.<br><br></p>
+
+  <h4 style="text-align:center">How to play<br></h4>
+
+  <p>Two objects will flash on the screen. You must select "Yes" if the objects
+    meet the level's criteria, or "No" if the objects do not. Be careful: you only
+    have a short amount of time to answer.</p><br>
+  <button ion-button round full="true" (click)="start('matchingColor')">Color Match</button><br>
+  <button ion-button round full="true" (click)="start('matchingShape')">Shape Match</button><br>
+  <button ion-button round full="true" (click)="start('matchingShapeAndColor')">Shape and Color Match</button>
+</ion-content>

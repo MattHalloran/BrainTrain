@@ -1,0 +1,19 @@
+page-home {
+
+}
+
+.items {
+  //background-color: map-get($colors, lightPrimary);
+}
+
+.header {
+  font-size: 1em;
+  color: map-get($colors, textColor);
+  background-color: map-get($colors, lightPrimary);
+}
+
+.arrows {
+  width: 20px;
+  height: 20px;
+  vertical-align: bottom;
+}

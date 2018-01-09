@@ -1,0 +1,54 @@
+page-split-focus-game {
+
+}
+
+.leftImage {
+  position:absolute;
+  top: 30%;
+  left: 5%;
+}
+
+.rightImage {
+  position: absolute;
+  top: 30%;
+  left: 55%;
+}
+
+.buttons {
+  left: 0px;
+  position: absolute;
+  top: 90%;
+}
+
+.sCountdown {
+  position: absolute;
+  font-size: 12em;
+  color: map-get($colors, darkPrimary) !important;
+  left: 0px;
+  top: 20%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.xCheck {
+  position: absolute;
+  display: block;
+  top: 25%;
+  left: 25%;
+}
+
+.sCounter {
+  position: relative;
+  top: -10px;
+  font-size: 5em;
+  color: map-get($colors, darkPrimary) !important;
+  border: 1px solid map-get($colors, darkPrimary) !important;
+}
+
+.sMilli {
+  position: relative;
+  vertical-align: top;
+  font-size: 2em;
+  color: map-get($colors, darkPrimary) !important;
+}
