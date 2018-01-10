@@ -205,8 +205,6 @@ export class TargetFindGamePage {
           }
         }
       }
-      if(!clickedCorrect)
-        this.incorrect();
     }
   }
 
