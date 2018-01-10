@@ -40,7 +40,8 @@ export class TargetFindGamePage {
   timesLeft = 10;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar) {
-    for (var i = 0; i < this.objectPositions.length; i++) {
+    let endFor = this.objectPositions.length
+    for (var i = 0; i < endFor; i++) {
       this.objectPositions[i] = new Array(2);
     }
     this.level = navParams.get('level');

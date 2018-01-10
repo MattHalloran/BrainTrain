@@ -18,6 +18,7 @@ export class BirdsEyeGamePage {
 
   background = 'birdBackground1';
   birds = [0, 1, 2, 3, 4, 5, 6 ,7];//Yes, this is the only way to do this
+  birdPositions = new Array(12);
   allMillis = [2000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000,
               750, 600, 500, 400, 310, 230, 180, 130, 100, 75, 50, 45, 40, 35, 30];
   targetBirdNum = 0;
@@ -37,6 +38,10 @@ export class BirdsEyeGamePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar)
   {
+    let endFor = this.birdPositions.length
+    for (var i = 0; i < endFor; i++) {
+      this.birdPositions[i] = new Array(2);
+    }
     let level = navParams.get('range') + '';
     this.background = 'birdBackground' + level;
     platform.ready().then(() => {
@@ -100,6 +105,8 @@ export class BirdsEyeGamePage {
     var maxWidth = this.platform.width()-this.birdWidth;
     var minHeight = 90;
     var maxHeight = this.platform.height()-this.birdHeight;
+    var birdWidth = this.birdWidth;
+    var birdHeight = this.birdHeight;
     var x;
     var y;
 
@@ -111,15 +118,15 @@ export class BirdsEyeGamePage {
         x = Math.floor(Math.random()*maxWidth);
         y = Math.floor(Math.random()*(maxHeight-minHeight)+minHeight);
         for(let j = 0; j < i; j++) {
-          let otherBird = document.getElementById(j + '');
-          let otherBirdX = parseInt(otherBird.style.left.replace('px', ''));
-          let otherBirdY = parseInt(otherBird.style.top.replace('px', ''));
-          if((Math.abs(x-otherBirdX) <= this.birdWidth) && (Math.abs(y-otherBirdY) <= this.birdHeight))
+          let otherBirdX = this.birdPositions[j][0];
+          let otherBirdY = this.birdPositions[j][1];
+          if((Math.abs(x-otherBirdX) <= birdWidth) && (Math.abs(y-otherBirdY) <= birdHeight))
             invalidSpot = true;
         }
       } while(invalidSpot)
 
-      bird.setAttribute('style','top: ' + y + 'px; left: ' + x + 'px;');
+      this.birdPositions[i][0] = x;
+      this.birdPositions[i][1] = y;
       bird.hidden = false;
     }
   }
@@ -144,44 +151,46 @@ export class BirdsEyeGamePage {
   */
   handleTap(ev) {
     if(this.canClick) {
-      this.canClick = false;
       this.timesLeft--;
       var xClick = ev.changedPointers[0].x;
       var yClick = ev.changedPointers[0].y;
-      var clickedBird = false;
+      var showX = false;
+      var clickedCorrectBird = false;
+      var width = this.birdWidth;
+      var height = this.birdHeight;
+      var target = this.targetBirdNum;
       var i = 0;
-      while(i <= this.birds.length-1 && !clickedBird) {
-        var bird = document.getElementById(i + '');
-        var birdX = parseInt(bird.style.left.replace('px', ''));
-        var birdY = parseInt(bird.style.top.replace('px', ''));
+      while(i <= this.birds.length-1 && !clickedCorrectBird) {
+        var birdX = this.birdPositions[i][0];
+        var birdY = this.birdPositions[i][1];
+          if(xClick >= birdX && xClick <= birdX+width && yClick >= birdY && yClick <= birdY+height) {
+            this.canClick = false;
+            if(i == target){ //clicked correct bird
+              clickedCorrectBird = true;
+              if(this.lastCorrect) {
+                this.lastCorrect = false;
+                if(this.currentMilliPos < this.allMillis.length-1)
+                  this.currentMilliPos++;
+              }
+              else
+                this.lastCorrect = true;
 
-        if(xClick >= birdX && xClick <= birdX+this.birdWidth && yClick >= birdY && yClick <= birdY+this.birdHeight && i == this.targetBirdNum) { //clicked correct bird
-          bird.hidden = true;
-          clickedBird = true;
-
-          if(this.lastCorrect) {
-            if(this.currentMilliPos < this.allMillis.length-1)
-              this.currentMilliPos++;
-          }
-
-          if(this.lastCorrect)
-            this.lastCorrect = false;
-          else
-            this.lastCorrect = true;
-          this.totalCorrect++;
+              this.totalCorrect++;
+              this.displayImage('check');
+            }
+            else
+              showX = true;
         }
 
         i++;
       }
       //clicked incorrect bird
-      if(!clickedBird) {
+      if(showX) {
         this.lastCorrect = false;
         if(this.currentMilliPos > 0)
           this.currentMilliPos--;
         this.displayImage('x');
      }
-     else
-        this.displayImage('check');
     }
   }
 
@@ -205,6 +214,11 @@ export class BirdsEyeGamePage {
   */
   getSource(s: string) {
     return s == (this.targetBirdNum + '') ? this.birdBaseFile + this.level + 'BirdTarget.png' : this.birdBaseFile + this.level + 'BirdCommon.png';
+  }
+
+  getPosition(b: any) {
+    return {'left': this.birdPositions[parseInt(b)][0] + 'px',
+            'top': this.birdPositions[parseInt(b)][1] + 'px'}
   }
 
   /**

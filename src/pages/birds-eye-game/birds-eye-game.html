@@ -6,7 +6,7 @@
 <ion-content padding no-bounce name="back" [ngClass]="background" (tap)="handleTap($event)">
     <label class="bCounter">{{getTimesLeft()}}</label>
     <label class="bMilli">{{getMilli()}}ms</label>
-    <img *ngFor="let bird of birds" id={{bird}} class="bird" src={{getSource(bird)}} [hidden]="true">
+    <img *ngFor="let bird of birds" id={{bird}} class="bird" src={{getSource(bird)}} [hidden]="true" [ngStyle]="getPosition(bird)">
     <label id="countdown" class="bCountdown" hidden="true">{{getCountDown()}}</label>
     <img id="x" class="xCheck" hidden="true" src="assets/imgs/x.svg" width={{getWidth()}} height={{getHeight()}}>
     <img id="check" class="xCheck" hidden="true" src="assets/imgs/check.svg" width={{getWidth()}} height={{getHeight()}}>
