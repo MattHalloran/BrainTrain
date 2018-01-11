@@ -216,10 +216,13 @@ export class SplitFocusGamePage {
       this.hideShapes();
       this.timesLeft--;
 
+      var leftColor = this.getColor(this.leftSource);
+      var rightColor = this.getColor(this.rightSource);
+      var leftShape = this.getShape(this.leftSource);
+      var rightShape = this.getShape(this.rightSource);
+
       if(this.levelType == 'matchingColor') {
-        if((this.leftSource.includes('Red') && this.rightSource.includes('Red')) ||
-            (this.leftSource.includes('Green') && this.rightSource.includes('Green')) ||
-            (this.leftSource.includes('Blue') && this.rightSource.includes('Blue'))) {
+        if(leftColor == rightColor) {
               if(s == 'yes')
                 this.correct();
               else
@@ -233,9 +236,7 @@ export class SplitFocusGamePage {
         }
       }
       if(this.levelType == 'matchingShape') {
-        if((this.leftSource.includes('Circle') && this.rightSource.includes('Circle')) ||
-            (this.leftSource.includes('Square') && this.rightSource.includes('Square')) ||
-            (this.leftSource.includes('Triangle') && this.rightSource.includes('Triangle'))) {
+        if(leftShape == rightShape) {
               if(s == 'yes')
                 this.correct();
               else
@@ -249,13 +250,7 @@ export class SplitFocusGamePage {
         }
       }
       if(this.levelType == 'matchingShapeAndColor') {
-        if(((this.leftSource.includes('Red') && this.rightSource.includes('Red')) ||
-            (this.leftSource.includes('Green') && this.rightSource.includes('Green')) ||
-            (this.leftSource.includes('Blue') && this.rightSource.includes('Blue')))
-                                    &&
-            ((this.leftSource.includes('Circle') && this.rightSource.includes('Circle')) ||
-            (this.leftSource.includes('Square') && this.rightSource.includes('Square')) ||
-            (this.leftSource.includes('Triangle') && this.rightSource.includes('Triangle')))) {
+        if(leftShape == rightShape && leftColor == rightColor) {
               if(s == 'yes')
                 this.correct();
               else
@@ -269,6 +264,32 @@ export class SplitFocusGamePage {
         }
       }
     }
+  }
+
+  /**
+  * @param  source Source of shape
+  * @return Color of shape
+  */
+  getColor(source) {
+    if(source.includes('Red'))
+      return 'Red';
+    else if(source.includes('Green'))
+      return 'Green';
+    else
+      return 'Blue';
+  }
+
+  /**
+  * @param  source Source of shape
+  * @return Shape of shape
+  */
+  getShape(source) {
+    if(source.includes('Circle'))
+      return 'Circle';
+    else if(source.includes('Square'))
+      return 'Square';
+    else
+      return 'Triangle';
   }
 
   /**
