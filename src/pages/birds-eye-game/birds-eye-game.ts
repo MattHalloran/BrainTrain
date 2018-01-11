@@ -151,7 +151,6 @@ export class BirdsEyeGamePage {
   */
   handleTap(ev) {
     if(this.canClick) {
-      this.timesLeft--;
       var xClick = ev.changedPointers[0].x;
       var yClick = ev.changedPointers[0].y;
       var showX = false;
@@ -165,6 +164,7 @@ export class BirdsEyeGamePage {
         var birdY = this.birdPositions[i][1];
           if(xClick >= birdX && xClick <= birdX+width && yClick >= birdY && yClick <= birdY+height) {
             this.canClick = false;
+            this.timesLeft--;
             if(i == target){ //clicked correct bird
               clickedCorrectBird = true;
               if(this.lastCorrect) {
