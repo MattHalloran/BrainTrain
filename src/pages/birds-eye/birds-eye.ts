@@ -26,9 +26,6 @@ export class BirdsEyePage {
   }
 
   public start(){
-
-    //this.storage.set('birdLevel', (this as any).myRange);
-    //this.navCtrl.push('BirdsEyeGamePage');
     this.navCtrl.push('BirdsEyeGamePage', {range: (this as any).myRange});
   }
 }

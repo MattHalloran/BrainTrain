@@ -9,37 +9,30 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'exercises.html',
   //name: 'ExercisesPage'
 })
-export class ExercisesPage
-{
+export class ExercisesPage {
 
-  exercises = ['Birds Eye', 'Split Focus', 'Target Find', 'Vision Sweep'];
+  exercises = ['Bird\'s Eye', 'List Recall', 'Split Focus', 'Target Find'];
 
-  constructor(public navCtrl: NavController)
-  {
+  constructor(public navCtrl: NavController) {
 
   }
 
   itemTapped(exercise: string)
   {
-    if(exercise == 'Birds Eye')
-    {
+    if(exercise == 'Bird\'s Eye')
       this.navCtrl.push('BirdsEyePage');
-    }
-    if(exercise == 'Split Focus'){
+    else if(exercise == 'List Recall')
+      this.navCtrl.push('ListRecallPage');
+    else if(exercise == 'Split Focus')
       this.navCtrl.push('SplitFocusPage');
-    }
-    if(exercise == 'Target Find'){
+    else if(exercise == 'Target Find')
       this.navCtrl.push('TargetFindPage');
-    }
-    if(exercise == 'Vision Sweep'){
-      this.navCtrl.push('VisionSweepPage');
-    }
 
   }
 
   getImage(name: String)
   {
-    return 'assets/imgs/' + name.replace(' ', '').replace('\'', '').toLowerCase() + '.jpg';
+    return 'assets/imgs/' + name.replace(' ', '').replace('\'', '').replace('\'', '').toLowerCase() + '.jpg';
   }
 
 }
