@@ -113,3 +113,7 @@ page-birds-eye-game {
   height: 100%;
   text-align: center;
 }
+
+.alert {
+  background-color: map-get($colors, lightPrimary);
+}

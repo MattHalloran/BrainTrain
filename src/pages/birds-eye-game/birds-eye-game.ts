@@ -2,7 +2,7 @@
 //1-2-17
 
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -40,7 +40,7 @@ export class BirdsEyeGamePage {
   totalCorrect = 0;
   timesLeft = 40;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar)
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController)
   {
     let endFor = this.birdPositions.length
     for (var i = 0; i < endFor; i++) {
@@ -73,19 +73,6 @@ export class BirdsEyeGamePage {
     this.countdown = '3';
     cd.hidden = false;
     this.countdownHelper('2');
-    // this.sleep(1000).then(() => {
-    //   this.countdown = '2';
-    //   this.sleep(1000).then(() => {
-    //     this.countdown = '1';
-    //     this.sleep(1000).then(() => {
-    //       this.countdown = 'GO';
-    //       this.sleep(200).then(() => {
-    //         cd.hidden = true;
-    //         this.startTime();
-    //       });
-    //     });
-    //   });
-    // });
   }
 
   /**
@@ -120,10 +107,6 @@ export class BirdsEyeGamePage {
     else {
       this.loadBirds();
       this.startTimeTimeout = setTimeout(() => { this.hideBirds(); this.canClick = true;}, this.allMillis[this.currentMilliPos]);
-      // this.sleep(this.allMillis[this.currentMilliPos]).then(() => {
-      //   this.hideBirds();
-      //   this.canClick = true;
-      // });
     }
   }
 
@@ -229,10 +212,6 @@ export class BirdsEyeGamePage {
   displayImage(s : string) {
     document.getElementById(s).hidden = false;
     this.displayTimeout = setTimeout(() => { document.getElementById(s).hidden = true; this.startTime(); }, 500);
-    // this.sleep(500).then(() => {
-    //   document.getElementById(s).hidden = true;
-    //   this.startTime();
-    // });
   }
 
   /**
@@ -287,9 +266,14 @@ export class BirdsEyeGamePage {
   /**
   * Ends level, shows stats in popup, and updates user data
   */
-  end() { //show score in popup, save score with sqlite or data file
-    alert('Finished! Your score was ' + this.totalCorrect);
-    this.statusBar.show();
+  end() { //save score with sqlite or data file
+    let alert = this.alertController.create({
+      title: 'Finished!',
+      subTitle: 'Your score was ' + this.totalCorrect,
+      buttons: ['Sweet!'],
+      cssClass: 'alert',
+    });
+    alert.present();
     this.navCtrl.pop();
   }
 }

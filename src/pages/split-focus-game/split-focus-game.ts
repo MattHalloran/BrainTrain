@@ -2,7 +2,7 @@
 //1-3-17
 
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -32,7 +32,7 @@ export class SplitFocusGamePage {
   leftSource = '';
   rightSource = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar)
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController)
   {
     this.levelType = navParams.get('level');
     platform.ready().then(() => {
@@ -337,7 +337,13 @@ export class SplitFocusGamePage {
   * Ends game
   */
   end() {
-    this.statusBar.show();
+    let alert = this.alertController.create({
+      title: 'Finished!',
+      subTitle: 'Your score was ' + this.totalCorrect,
+      buttons: ['Sweet!'],
+      cssClass: 'alert',
+    });
+    alert.present();
     this.navCtrl.pop();
   }
 

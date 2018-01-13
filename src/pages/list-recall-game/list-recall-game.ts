@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -26,11 +26,9 @@ export class ListRecallGamePage {
   allWords: any[] = [];
   list = new Array(2);
 
-  lastWord = 'empty'; //used instead of keyCode because keyCode is always 0 or 229 on android devices
-
   wordsShowing = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http, public alertController: AlertController) {
     platform.ready().then(() => {
       statusBar.hide();
     });
@@ -64,21 +62,6 @@ export class ListRecallGamePage {
     let cd = document.getElementById('countdown');
     cd.hidden = false;
     this.countdownHelper('2');
-    // this.sleep(1000).then(() => {
-    //   this.countdown = '2';
-    //   this.sleep(1000).then(() => {
-    //     this.countdown = '1';
-    //     this.sleep(1000).then(() => {
-    //       this.countdown = 'GO';
-    //       this.sleep(200).then(() => {
-    //         cd.hidden = true;
-    //         document.getElementById('leftList').hidden = false;
-    //         document.getElementById('rightList').hidden = false;
-    //         this.start();
-    //       });
-    //     });
-    //   });
-    // });
   }
 
   /**
@@ -114,10 +97,6 @@ export class ListRecallGamePage {
          this.timer--;
          this.startTime();
        },1000);
-      // this.sleep(1000).then(() => {
-      //   this.timer--;
-      //   this.startTime();
-      // });
     }
     else
       this.timerEnded();
@@ -160,37 +139,23 @@ export class ListRecallGamePage {
 
   onInputTime(text: string) {
     text = text.replace(/ /g, '').toLowerCase();
-    console.log(this.lastWord);
-    if(text == this.lastWord.substring(0, this.lastWord.length-1)) {
-      (<HTMLInputElement>document.getElementById('wordInput')).value = '';
-      this.lastWord = 'empty';
-    }
-    else {
-      this.lastWord = text;
-      let endUsed = this.wordsUsed.length;
-      let endGotten = this.wordsGotten.length;
-      for(let i = 0; i < endUsed; i++) {
-        if(this.wordsUsed[i] == text + '\u000d') {
-          console.log('yes' + i);
-          this.wordsGotten.push(this.wordsUsed[i]);
-          this.wordsUsed.splice(i, 1);
+    let endUsed = this.wordsUsed.length;
+    let endGotten = this.wordsGotten.length;
+    for(let i = 0; i < endUsed; i++) {
+      if(this.wordsUsed[i].toLowerCase() == text + '\u000d') {
+        console.log('yes' + i);
+        this.wordsGotten.push(this.wordsUsed[i]);
+        this.wordsUsed.splice(i, 1);
+        let input = <HTMLInputElement>document.getElementById('wordInput');
+        input.value = '';
+        input.setAttribute('style', 'border-color: #44ff44;');
+        this.hexTimeout = setTimeout(() => { input.setAttribute('style', 'border-color: #fcff54;'); }, 300);
+      }
+      if(i < endGotten) {
+        if(this.wordsGotten[i] == text + '\u000d') {
           let input = <HTMLInputElement>document.getElementById('wordInput');
-          input.value = '';
-          input.setAttribute('style', 'border-color: #44ff44;');
+          input.setAttribute('style', 'border-color: #ff0000;');
           this.hexTimeout = setTimeout(() => { input.setAttribute('style', 'border-color: #fcff54;'); }, 300);
-          // this.sleep(300).then(() => {
-          //   input.setAttribute('style', 'border-color: #fcff54;');
-          // });
-        }
-        if(i < endGotten) {
-          if(this.wordsGotten[i] == text + '\u000d') {
-            let input = <HTMLInputElement>document.getElementById('wordInput');
-            input.setAttribute('style', 'border-color: #ff0000;');
-            this.hexTimeout = setTimeout(() => { input.setAttribute('style', 'border-color: #fcff54;'); }, 300);
-            // this.sleep(300).then(() => {
-            //   input.setAttribute('style', 'border-color: #fcff54;');
-            // })
-          }
         }
       }
     }
@@ -208,6 +173,13 @@ export class ListRecallGamePage {
   }
 
   end() {
+    let alert = this.alertController.create({
+      title: 'Finished!',
+      subTitle: 'Your score was ' + this.wordsGotten.length,
+      buttons: ['Sweet!'],
+      cssClass: 'alert',
+    });
+    alert.present();
     this.navCtrl.pop();
   }
 }

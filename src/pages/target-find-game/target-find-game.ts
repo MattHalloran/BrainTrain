@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 
 @IonicPage({
@@ -44,7 +44,7 @@ export class TargetFindGamePage {
   totalCorrect = 0;
   timesLeft = 10;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController) {
     let endFor = this.objectPositions.length
     for (var i = 0; i < endFor; i++) {
       this.objectPositions[i] = new Array(2);
@@ -338,6 +338,13 @@ export class TargetFindGamePage {
   * Ends game
   */
   end() {
+    let alert = this.alertController.create({
+      title: 'Finished!',
+      subTitle: 'Your score was ' + this.totalCorrect,
+      buttons: ['Sweet!'],
+      cssClass: 'alert',
+    });
+    alert.present();
     this.navCtrl.pop();
   }
 
