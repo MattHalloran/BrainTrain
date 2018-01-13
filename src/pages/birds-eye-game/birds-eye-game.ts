@@ -30,6 +30,10 @@ export class BirdsEyeGamePage {
 
   canClick = false;
 
+  countdownTimeout;
+  startTimeTimeout;
+  displayTimeout;
+
   countdown = '3';
   currentMilliPos = 8;//change to get this value from last game played
   lastCorrect = false; //used so currentMilli is upped every time the user gets it right twice in a row
@@ -55,6 +59,9 @@ export class BirdsEyeGamePage {
   }
 
   ionViewWillUnload() {
+    clearTimeout(this.countdownTimeout);
+    clearTimeout(this.startTimeTimeout);
+    clearTimeout(this.displayTimeout);
     this.statusBar.show();
   }
 
@@ -65,19 +72,42 @@ export class BirdsEyeGamePage {
     let cd = document.getElementById('countdown');
     this.countdown = '3';
     cd.hidden = false;
-    this.sleep(1000).then(() => {
-      this.countdown = '2';
-      this.sleep(1000).then(() => {
-        this.countdown = '1';
-        this.sleep(1000).then(() => {
-          this.countdown = 'GO';
-          this.sleep(200).then(() => {
-            cd.hidden = true;
-            this.startTime();
-          });
-        });
-      });
-    });
+    this.countdownHelper('2');
+    // this.sleep(1000).then(() => {
+    //   this.countdown = '2';
+    //   this.sleep(1000).then(() => {
+    //     this.countdown = '1';
+    //     this.sleep(1000).then(() => {
+    //       this.countdown = 'GO';
+    //       this.sleep(200).then(() => {
+    //         cd.hidden = true;
+    //         this.startTime();
+    //       });
+    //     });
+    //   });
+    // });
+  }
+
+  /**
+  * Helper method for countdownStart()
+  */
+  countdownHelper(text: string) {
+    this.countdownTimeout = setTimeout(() => {
+      this.countdown = text;
+      if(text == '2')
+        this.countdownHelper('1');
+      else if(text == '1')
+        this.countdownHelper('GO');
+      else
+        this.goHelper();
+    }, 1000);
+  }
+
+  /**
+  * Helper method for countdownStart()
+  */
+  goHelper() {
+    this.countdownTimeout = setTimeout(() => { document.getElementById('countdown').hidden = true; this.startTime() }, 200);
   }
 
   /**
@@ -89,10 +119,11 @@ export class BirdsEyeGamePage {
     }
     else {
       this.loadBirds();
-      this.sleep(this.allMillis[this.currentMilliPos]).then(() => {
-        this.hideBirds();
-        this.canClick = true;
-      });
+      this.startTimeTimeout = setTimeout(() => { this.hideBirds(); this.canClick = true;}, this.allMillis[this.currentMilliPos]);
+      // this.sleep(this.allMillis[this.currentMilliPos]).then(() => {
+      //   this.hideBirds();
+      //   this.canClick = true;
+      // });
     }
   }
 
@@ -129,10 +160,6 @@ export class BirdsEyeGamePage {
       this.birdPositions[i][1] = y;
       bird.hidden = false;
     }
-  }
-
-  sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
   }
 
   /**
@@ -201,10 +228,11 @@ export class BirdsEyeGamePage {
   */
   displayImage(s : string) {
     document.getElementById(s).hidden = false;
-    this.sleep(500).then(() => {
-      document.getElementById(s).hidden = true;
-      this.startTime();
-    });
+    this.displayTimeout = setTimeout(() => { document.getElementById(s).hidden = true; this.startTime(); }, 500);
+    // this.sleep(500).then(() => {
+    //   document.getElementById(s).hidden = true;
+    //   this.startTime();
+    // });
   }
 
   /**

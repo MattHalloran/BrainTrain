@@ -35,6 +35,11 @@ export class TargetFindGamePage {
   canClick = false;
 
   countdown = '3';
+  countdownTimeout;
+  objectTimeout;
+  moveTimeout;
+  displayTimeout;
+
   correctStreak = 0; //every 3 correct in a row moves player to next speed
   totalCorrect = 0;
   timesLeft = 10;
@@ -66,29 +71,30 @@ export class TargetFindGamePage {
   */
   countdownStart() {
     let cd = document.getElementById('countdown');
-    this.countdown = '3';
     cd.hidden = false;
-    this.sleep(1000).then(() => {
-      this.countdown = '2';
-      this.sleep(1000).then(() => {
-        this.countdown = '1';
-        this.sleep(1000).then(() => {
-          this.countdown = 'GO';
-          this.sleep(200).then(() => {
-            cd.hidden = true;
-            this.startTime();
-          });
-        });
-      });
-    });
+    this.countdownHelper('2')
   }
 
   /**
-  * Sleep for an alloted time
-  * @param {time} Time slept in milliseconds
+  * Helper method for countdownStart()
   */
-  sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+  countdownHelper(text: string) {
+    this.countdownTimeout = setTimeout(() => {
+      this.countdown = text;
+      if(text == '2')
+        this.countdownHelper('1');
+      else if(text == '1')
+        this.countdownHelper('GO');
+      else
+        this.goHelper();
+    }, 1000);
+  }
+
+  /**
+  * Helper method for countdownStart()
+  */
+  goHelper() {
+    this.countdownTimeout = setTimeout(() => { document.getElementById('countdown').hidden = true; this.startTime()}, 200);
   }
 
   /**
@@ -102,18 +108,18 @@ export class TargetFindGamePage {
       this.targetsLeftToClick = this.currentTargetNum;
       this.currentMovingObjects = this.currentTargetNum;
       this.loadObjects(0, this.currentTargetNum);
-      this.sleep(2000).then(() => {
+      this.objectTimeout = setTimeout(() => {
         this.objectsMoving = true;
         this.moveObjects();
-        this.sleep(1500).then(() => {
+        this.objectTimeout = setTimeout(() => {
           this.loadObjects(this.currentTargetNum, this.objects.length);
           this.currentMovingObjects = this.objects.length;
-          this.sleep(6000).then(() => {
+          this.objectTimeout = setTimeout(() => {
             this.objectsMoving = false;
             this.canClick = true;
-          })
-        })
-      });
+          }, 6000);
+        }, 1500);
+      }, 2000);
     }
   }
 
@@ -148,13 +154,12 @@ export class TargetFindGamePage {
     console.log(Date.now());
   }
 
-  //0=N, 1=NE, 2=E, 3=SE, 4=S, 5=SW, 6=W, 7=NW
   //0=left, 1=top
   //1.4142 is used instead of sqrt(2) for efficiency
   //50 is used instead of object width and height for efficiency
   moveObjects() {
     if(this.objectsMoving) {
-      this.sleep(this.speed).then(() => {
+      this.moveTimeout = setTimeout(() => {
         for(let i = 0; i < this.currentMovingObjects; i++) {
           let direction = this.objectDirections[i];
           this.objectPositions[i][0]+=2*Math.cos(direction);
@@ -176,7 +181,7 @@ export class TargetFindGamePage {
           }
         }
         this.moveObjects();
-      });
+      },this.speed);
     }
   }
 
@@ -246,10 +251,10 @@ export class TargetFindGamePage {
   */
   displayImage(s : string) {
     document.getElementById(s).hidden = false;
-    this.sleep(500).then(() => {
+    this.displayTimeout = setTimeout(() => {
       document.getElementById(s).hidden = true;
       this.startTime();
-    });
+    }, 500);
   }
 
   hideObjects() {
@@ -321,6 +326,10 @@ export class TargetFindGamePage {
   }
 
   ionViewWillUnload() {
+    clearTimeout(this.countdownTimeout);
+    clearTimeout(this.objectTimeout);
+    clearTimeout(this.moveTimeout);
+    clearTimeout(this.displayTimeout);
     this.statusBar.show();
     this.objectsMoving = false;
   }

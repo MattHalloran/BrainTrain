@@ -21,6 +21,13 @@ page-list-recall-game {
   border: 1px solid map-get($colors, darkPrimary) !important;
 }
 
+.score {
+  position: relative;
+  vertical-align: top;
+  font-size: 2em;
+  color: map-get($colors, darkPrimary) !important;
+}
+
 .leftList {
   position: absolute;
   top: 15%;
@@ -34,4 +41,19 @@ page-list-recall-game {
 
 .words {
   font-size: 2em;
+}
+
+.input {
+  //text-input-highlight-color-valid: #2bfc28;
+  position: absolute;
+  font-size: 2em;
+  top: 30%;//15
+  left: 10%;
+  width: 80%;
+  height: 50px;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  //border-bottom: 5px;
+  border-color: #fcff54
 }

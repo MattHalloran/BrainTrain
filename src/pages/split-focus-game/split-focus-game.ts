@@ -25,6 +25,7 @@ export class SplitFocusGamePage {
   countdown = '3';
 
   canClick = false;
+  countdownTimeout;
   totalTimeout;
   sleepTimeout;
 
@@ -44,6 +45,9 @@ export class SplitFocusGamePage {
   }
 
   ionViewWillUnload() {
+    clearTimeout(this.countdownTimeout);
+    clearTimeout(this.totalTimeout);
+    clearTimeout(this.sleepTimeout);
     this.statusBar.show();
   }
 
@@ -53,19 +57,29 @@ export class SplitFocusGamePage {
   countdownStart() {
     let cd = document.getElementById('countdown');
     cd.hidden = false;
-    this.sleep(1000).then(() => {
-      this.countdown = '2';
-      this.sleep(1000).then(() => {
-        this.countdown = '1';
-        this.sleep(1000).then(() => {
-          this.countdown = 'GO';
-          this.sleep(200).then(() => {
-            cd.hidden = true;
-            this.startTime();
-          });
-        });
-      });
-    });
+    this.countdownHelper('2');
+  }
+
+  /**
+  * Helper method for countdownStart()
+  */
+  countdownHelper(text: string) {
+    this.countdownTimeout = setTimeout(() => {
+      this.countdown = text;
+      if(text == '2')
+        this.countdownHelper('1');
+      else if(text == '1')
+        this.countdownHelper('GO');
+      else
+        this.goHelper();
+    }, 1000);
+  }
+
+  /**
+  * Helper method for countdownStart()
+  */
+  goHelper() {
+    this.countdownTimeout = setTimeout(() => { document.getElementById('countdown').hidden = true; this.startTime()}, 200);
   }
 
   /**
@@ -81,14 +95,6 @@ export class SplitFocusGamePage {
       this.totalTimeout = setTimeout(() => { this.incorrect(); }, this.allMillis[this.currentMilliPos]*2);
       this.sleepTimeout = setTimeout(() => { this.hideShapes(); }, this.allMillis[this.currentMilliPos]);
     }
-  }
-
-  /**
-  * Sleep for an alloted time
-  * @param {time} Time slept in milliseconds
-  */
-  sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
   }
 
   /**
@@ -191,10 +197,10 @@ export class SplitFocusGamePage {
   }
 
   /**
-  * @return The current number of milliseconds the birds are visible for
+  * @return The current number of milliseconds the user has to decide
   */
   getMilli() {
-    return this.allMillis[this.currentMilliPos];
+    return this.allMillis[this.currentMilliPos]*2;
   }
 
   /**
@@ -324,10 +330,7 @@ export class SplitFocusGamePage {
   */
   displayImage(s : string) {
     document.getElementById(s).hidden = false;
-    this.sleep(500).then(() => {
-      document.getElementById(s).hidden = true;
-      this.startTime();
-    });
+    setTimeout(() => { document.getElementById(s).hidden = true; this.startTime(); }, 500);
   }
 
   /**
