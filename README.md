@@ -9,7 +9,7 @@ Here are some screenshots from the app
 
 ![Home screenshot](https://i.imgur.com/RHNe4HP.png)
 
-![Exercises Screenshot](https://imgur.com/2JXH1Yy)
+![Exercises Screenshot](https://i.imgur.com/2JXH1Yy.png)
 
 ![Bird's Eye Screenshot](https://i.imgur.com/t2f9fWG.png)
 
