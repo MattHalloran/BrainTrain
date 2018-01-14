@@ -20,9 +20,47 @@
 
 ion-header ion-icon.back-button-icon.icon,
 ion-header span.back-button-text.back-button-text-ios {
-   color: #000000;
+   color: map-get($colors, thirdTextColor);
 }
 
 .back-button-md {
   display:none !important;
+}
+
+.xCheck {
+  position: absolute;
+  display: block;
+  top: 25%;
+  left: 25%;
+}
+
+.alert-md.alert {
+  background: none !important;
+  color: transparent !important;
+
+}
+
+.alert-md {
+  .alert-head {
+    background-color: map-get($colors, darkPrimary);
+    color: map-get($colors, thirdTextColor);
+    text-align: center;
+  }
+  .alert-message {
+    text-align: center;
+    color: map-get($colors, textColor);
+    padding: 10px;
+  }
+  .alert-button {
+    width: 100%;
+    text-align: center;
+    .button-inner {
+      display: inline;
+      text-align: center;
+      color: map-get($colors, darkPrimary);
+    }
+  }
+  .alert-button-group {
+    padding: 0px;
+  }
 }

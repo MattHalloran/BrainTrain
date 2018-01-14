@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 
 @IonicPage({
   name: 'TargetFindGamePage'
@@ -40,11 +41,14 @@ export class TargetFindGamePage {
   moveTimeout;
   displayTimeout;
 
+  chartData;
+  gameData;
+
   correctStreak = 0; //every 3 correct in a row moves player to next speed
   totalCorrect = 0;
   timesLeft = 10;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController) {
+  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController) {
     let endFor = this.objectPositions.length
     for (var i = 0; i < endFor; i++) {
       this.objectPositions[i] = new Array(2);
@@ -55,6 +59,15 @@ export class TargetFindGamePage {
     this.speed*=this.targetSpeed;
     platform.ready().then(() => {
       statusBar.hide();
+    });
+
+    storage.get('chartData').then((cData) => {
+      this.chartData = cData;
+    });
+
+    storage.get('gameData').then((gData) => {
+      this.gameData = gData;
+      this.currentTargetNum = this.gameData['Target Find'].lastTargetNum;
     });
 
     this.maxX = this.platform.width()-this.objectWidth;
@@ -338,9 +351,14 @@ export class TargetFindGamePage {
   * Ends game
   */
   end() {
+    if(this.gameData['Target Find'].highScore < this.totalCorrect) {
+      this.gameData['Target Find'].highScore = this.totalCorrect;
+    }
+    this.gameData['Target Find'].lastTargetNum = this.currentTargetNum;
+    this.storage.set('gameData', this.gameData);
     let alert = this.alertController.create({
       title: 'Finished!',
-      subTitle: 'Your score was ' + this.totalCorrect,
+      message: 'Your score was ' + this.totalCorrect,
       buttons: ['Sweet!'],
       cssClass: 'alert',
     });

@@ -12,12 +12,12 @@
         <canvas #lineCanvas id="myChart"></canvas>
       </ion-card-content>
     </ion-card>
-  <h5><ion-list-header class="header" (click)="toggleOverall()">Overall progress <img id="overallArrow" [src]="overallArrow" class="arrows"></ion-list-header></h5>
+  <!-- <h5><ion-list-header class="header" (click)="toggleOverall()">Overall progress <img id="overallArrow" [src]="overallArrow" class="arrows"></ion-list-header></h5>
     <h6><ion-list id="overall">
       <ion-item *ngFor="let game of games" class="items">{{game}}</ion-item>
-    </ion-list></h6>
+    </ion-list></h6> -->
   <h5><ion-list-header class="header" (click)="toggleHigh()">High Scores <img id="highArrow" [src]="highArrow" class="arrows"></ion-list-header></h5>
     <h6><ion-list id="high">
-      <ion-item *ngFor="let game of games" class="items">{{game}}</ion-item>
+      <ion-item *ngFor="let game of games" class="items">{{getHighScore(game)}}</ion-item>
     </ion-list></h6>
 </ion-content>

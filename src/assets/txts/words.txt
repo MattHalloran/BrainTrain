@@ -37,7 +37,7 @@ group
 under
 general
 research
-January
+january
 program
 game
 could
@@ -138,7 +138,7 @@ visit
 tool
 reply
 customer
-December
+december
 compare
 college
 value
@@ -168,8 +168,8 @@ large
 gallery
 table
 however
-October
-November
+october
+november
 market
 library
 really
@@ -183,7 +183,7 @@ human
 required
 second
 movie
-March
+march
 better
 going
 friend
@@ -191,7 +191,7 @@ server
 study
 again
 looking
-April
+april
 never
 user
 complete
@@ -213,7 +213,7 @@ recent
 problem
 memory
 social
-August
+august
 quote
 language
 rate
@@ -234,7 +234,7 @@ issue
 range
 building
 court
-February
+february
 always
 result
 audio
@@ -394,7 +394,7 @@ simple
 quick
 wireless
 license
-Friday
+friday
 whole
 annual
 later
@@ -437,7 +437,7 @@ orders
 summary
 growth
 notes
-Monday
+monday
 activity
 although
 western
@@ -471,7 +471,7 @@ printer
 believe
 effect
 asked
-Sunday
+sunday
 casino
 volume
 cross
@@ -509,7 +509,7 @@ taking
 values
 division
 coming
-Tuesday
+tuesday
 object
 machine
 length
@@ -519,12 +519,12 @@ returns
 follow
 sample
 shown
-Saturday
+saturday
 culture
 flash
 choice
 starting
-Thursday
+thursday
 courses
 consumer
 airport

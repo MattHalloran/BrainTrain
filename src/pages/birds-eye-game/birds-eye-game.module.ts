@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { BirdsEyeGamePage } from './birds-eye-game';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { BirdsEyeGamePage } from './birds-eye-game';
   ],
   imports: [
     IonicPageModule.forChild(BirdsEyeGamePage),
+    IonicStorageModule.forRoot(),
   ],
   entryComponents: [
     BirdsEyeGamePage

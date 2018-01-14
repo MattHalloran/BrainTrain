@@ -3,14 +3,23 @@
 
 
 <ion-content padding>
-  <label class="lCounter">{{getTimer()}}</label>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <label class="lCounter">{{getTimer()}}</label>
+      </ion-col>
+      <ion-col col-6>
+        <button id="readyFinish" class="buttonClass" round="false" full="true" (click)='readyFinish()'>{{this.buttonText}}</button><br>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <label id="countdown" class="lCountdown" hidden="true">{{getCountDown()}}</label>
-  <label id="score" class="score" hidden="true">{{getScore()}} words</label>
   <ion-list id="leftList" class="leftList" hidden="true">
     <ion-item *ngFor="let word of list[0]" class="words">{{word}}</ion-item>
   </ion-list>
   <ion-list id="rightList" class="rightList" hidden="true">
     <ion-item *ngFor="let word of list[1]" class="words">{{word}}</ion-item>
   </ion-list>
-    <input id="wordInput" class="input" hidden="true" text-center type="text" placeholder="Enter words" (input)='onInputTime($event.target.value)'>
+  <input id="wordInput" class="input" hidden="true" text-center type="text" placeholder="Enter words" (input)='onInputTime($event.target.value)'>
+  <label id="score" class="score" hidden="true">{{getScore()}} words</label>
 </ion-content>

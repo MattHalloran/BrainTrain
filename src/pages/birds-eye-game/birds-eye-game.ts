@@ -34,6 +34,9 @@ export class BirdsEyeGamePage {
   startTimeTimeout;
   displayTimeout;
 
+  chartData;
+  gameData;
+
   countdown = '3';
   currentMilliPos = 8;//change to get this value from last game played
   lastCorrect = false; //used so currentMilli is upped every time the user gets it right twice in a row
@@ -50,6 +53,15 @@ export class BirdsEyeGamePage {
     this.background = 'birdBackground' + level;
     platform.ready().then(() => {
       statusBar.hide();
+    });
+
+    storage.get('chartData').then((cData) => {
+      this.chartData = cData;
+    });
+
+    storage.get('gameData').then((gData) => {
+      this.gameData = gData;
+      this.currentMilliPos = this.gameData['Bird\'s Eye'].lastMilliPos;
     });
   }
 
@@ -267,9 +279,13 @@ export class BirdsEyeGamePage {
   * Ends level, shows stats in popup, and updates user data
   */
   end() { //save score with sqlite or data file
+    if(this.gameData['Bird\'s Eye'].highScore[parseInt(this.level)-1] < this.totalCorrect) {
+      this.gameData['Bird\'s Eye'].highScore[parseInt(this.level)-1] = this.totalCorrect;
+      this.storage.set('gameData', this.gameData);
+    }
     let alert = this.alertController.create({
       title: 'Finished!',
-      subTitle: 'Your score was ' + this.totalCorrect,
+      message: 'Your score was ' + this.totalCorrect,
       buttons: ['Sweet!'],
       cssClass: 'alert',
     });

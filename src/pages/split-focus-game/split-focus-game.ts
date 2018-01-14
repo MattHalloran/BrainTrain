@@ -15,13 +15,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 })
 export class SplitFocusGamePage {
 
-  allMillis = [2000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000,
+  allMillis = [3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000,
               750, 600, 500, 400, 310, 230, 180, 130, 100, 75, 50, 45, 40, 35, 30];
   currentMilliPos = 8;//change to get this value from last game played
   correctStreak = 0; //every 4 correct in a row moves player to next speed
   totalCorrect = 0;
-  timesLeft = 60;
+  timesLeft = 60;//60
   levelType = '';
+  levelTypeInt = 0;
   countdown = '3';
 
   canClick = false;
@@ -29,14 +30,33 @@ export class SplitFocusGamePage {
   totalTimeout;
   sleepTimeout;
 
+  chartData;
+  gameData;
+
   leftSource = '';
   rightSource = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController)
-  {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController){
     this.levelType = navParams.get('level');
+    if(this.levelType == 'matchingColor')
+      this.levelTypeInt = 0;
+    else if(this.levelType == 'matchingShape')
+      this.levelTypeInt = 1;
+    else
+      this.levelTypeInt = 2;
+
     platform.ready().then(() => {
       statusBar.hide();
+    });
+
+    storage.get('chartData').then((cData) => {
+      this.chartData = cData;
+    });
+
+    storage.get('gameData').then((gData) => {
+      this.gameData = gData;
+      this.currentMilliPos = this.gameData['Split Focus'].lastMilliPos;
+      console.log(this.gameData['Split Focus'].lastMilliPos);
     });
    }
 
@@ -215,12 +235,12 @@ export class SplitFocusGamePage {
   * @param {s} The button clicked
   */
   clicked(s: string) {
+    console.log(this.canClick);
     if(this.canClick) {
       clearTimeout(this.totalTimeout);
       clearTimeout(this.sleepTimeout);
       this.canClick = false;
       this.hideShapes();
-      this.timesLeft--;
 
       var leftColor = this.getColor(this.leftSource);
       var rightColor = this.getColor(this.rightSource);
@@ -302,6 +322,7 @@ export class SplitFocusGamePage {
   * Decides what to do after correct button was pressed
   */
   correct() {
+    this.timesLeft--;
     this.totalCorrect++;
     this.correctStreak++;
     if(this.correctStreak == 4) {
@@ -316,6 +337,7 @@ export class SplitFocusGamePage {
   * Decides what to do after incorrect button was pressed
   */
   incorrect() {
+    this.timesLeft--;
     this.canClick = false;
     this.correctStreak = 0;
     if(this.currentMilliPos > 0)
@@ -337,14 +359,19 @@ export class SplitFocusGamePage {
   * Ends game
   */
   end() {
+    this.gameData['Split Focus'].lastMilliPos = this.currentMilliPos;
+    if(this.gameData['Split Focus'].highScore[this.levelTypeInt] < this.totalCorrect)
+      this.gameData['Split Focus'].highScore[this.levelTypeInt] = this.totalCorrect;
+    this.storage.set('gameData', this.gameData);
     let alert = this.alertController.create({
       title: 'Finished!',
-      subTitle: 'Your score was ' + this.totalCorrect,
+      message: 'Your score was ' + this.totalCorrect,
       buttons: ['Sweet!'],
       cssClass: 'alert',
     });
     alert.present();
     this.navCtrl.pop();
+
   }
 
 }

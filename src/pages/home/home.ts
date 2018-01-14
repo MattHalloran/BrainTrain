@@ -2,7 +2,7 @@
 //1-3-17
 
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
 
@@ -15,21 +15,93 @@ export class HomePage {
   @ViewChild('lineCanvas') lineCanvas;
   lineChart: any;
 
-  games = ['Bird\'s Eye', 'Split Focus', 'Target Find', 'Vision Sweep'];
+  games = ['Bird\'s Eye', 'List Recall', 'Split Focus', 'Target Find'];
   weeklyArrow = 'assets/imgs/downArrow.png';
   overallArrow = 'assets/imgs/downArrow.png';
   highArrow = 'assets/imgs/downArrow.png';
 
-  //stats;
+  chartData;
+  chartDataArray = new Array(4);
+  gameData;
 
-  constructor(public navCtrl: NavController, public storage: Storage, public platform: Platform){
-    //storage.set('first', true); //for testing purposes
-    //this.stats = storage.get('stats');
+  constructor(public navCtrl: NavController, public storage: Storage, public platform: Platform, public alertController: AlertController){
+    storage.get('chartData').then((cData) => {
+      if(cData == undefined) {
+        this.chartData = {
+          "Bird's Eye": {
+            "data": [1, 2, 3, 4, 5, 6, 7]
+          },
+          "List Recall": {
+            "data": [7, 6, 5, 4, 3, 2, 1]
+          },
+          "Split Focus": {
+            "data": [3, 3, 3, 3, 3, 3, 3]
+          },
+          "Target Find": {
+            "data": [0, 6, 1, 7, 3, 2, 8]
+          }
+        };
+        storage.set('chartData', this.chartData);
+      }
+      else
+        this.chartData = cData;
+      this.setupChart();
+    });
+
+    storage.get('gameData').then((gData) => {
+      if(gData == undefined) {
+        this.gameData = {
+          "Bird's Eye": {
+            "highScore": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "highestLevel": 1,
+            "lastMilliPos": [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+          },
+          "List Recall": {
+            "highScore": 0
+          },
+          "Split Focus": {
+            "highScore": [0, 0, 0],
+            "lastMilliPos":[8, 8, 8]
+          },
+          "Target Find": {
+            "highScore": [0, 0, 0, 0],
+            "lastTargetNum": [2, 2, 2, 2]
+          }
+        };
+        storage.set('gameData', this.gameData);
+      }
+      else
+        this.gameData = gData;
+    });
   }
 
   ionViewDidLoad() {
-    var test = [12, 12 ,12 ,12 ,12 ,12, 45];
-    console.log(test);
+  }
+
+  ionViewWillEnter() {
+    //causes weird chart glitches
+    // this.storage.get('chartData').then((cData) => {
+    //   console.log(cData);
+    //   console.log(this.chartData);
+    //   if(this.chartData != cData) {
+    //     this.chartData = cData;
+    //     this.setupChart();
+    //   }
+    // });
+
+    this.storage.get('gameData').then((gData) => {
+      this.gameData = gData;
+    });
+  }
+
+  setupChart() {
+    for(let i = 0; i < this.games.length; i++) {
+      try {
+        this.chartDataArray[i] = this.chartData[this.games[i]].data;
+      } catch(err) {
+        this.chartDataArray[i] = [0, 0, 0, 0, 0, 0, 0];
+      }
+    }
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
@@ -54,7 +126,7 @@ export class HomePage {
             pointHoverBorderWidth: 2,
             pointRadius: 3,
             pointHitRadius: 10,
-            data: test,
+            data: this.chartDataArray[0],
             spanGaps: false
           },
           {
@@ -76,7 +148,7 @@ export class HomePage {
             pointHoverBorderWidth: 2,
             pointRadius: 3,
             pointHitRadius: 10,
-            data: [10, 20, 30, 40, 50, 60, 70],
+            data: this.chartDataArray[1],
             spanGaps: false
           },
           {
@@ -98,7 +170,7 @@ export class HomePage {
             pointHoverBorderWidth: 2,
             pointRadius: 3,
             pointHitRadius: 10,
-            data: [70, 60, 50, 40, 30, 20, 10],
+            data: this.chartDataArray[2],
             spanGaps: false
           },
           {
@@ -120,16 +192,26 @@ export class HomePage {
             pointHoverBorderWidth: 2,
             pointRadius: 3,
             pointHitRadius: 10,
-            data: [13, 72, 81, 1, 23, 45, 29],
+            data: this.chartDataArray[3],
             spanGaps: false
           }
         ]
       },
       options: {
-            maintainAspectRatio: false
-                }
+          maintainAspectRatio: false,//was false
+          animation:  false,
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      min: 0,
+                  }
+              }]
+          }
+      }
+
     });
     document.getElementById('myChart').style.height = this.getHeight() + 'px';
+    //this.lineChart.update();
   }
 
   getHeight() {
@@ -141,8 +223,12 @@ export class HomePage {
     return 0;//temp
   }
 
-  getSecondItem(game: string) {
-    return 'hello';//temp
+  getHighScore(game: string) {
+    try {
+      return game + ': ' + this.gameData[game].highScore;
+    } catch(err) {
+      return game + ': ' + 0;
+    }
   }
 
   toggleWeekly() { //no way to put these 3 into one function because dot notation doesn't accept variable evaluations

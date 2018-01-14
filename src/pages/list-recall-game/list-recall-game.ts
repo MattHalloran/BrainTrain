@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -20,6 +21,11 @@ export class ListRecallGamePage {
   startTimeTimeout;
   hexTimeout;
 
+  buttonText = 'Ready';
+
+  chartData;
+  gameData;
+
   wordsUsed = [];
   wordsGotten = [];
   totalWords = 3891;
@@ -28,13 +34,15 @@ export class ListRecallGamePage {
 
   wordsShowing = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http, public alertController: AlertController) {
+  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http, public alertController: AlertController) {
     platform.ready().then(() => {
       statusBar.hide();
     });
+
     for(let i = 0; i < 2; i++) {
       this.list[i] = new Array(25);
     }
+
     http.get('assets/txts/words.txt').map(res => res.text()).subscribe(data => {
       this.allWords = data.split('\n');
       for(let i = 0; i < 25; i++) {
@@ -51,6 +59,14 @@ export class ListRecallGamePage {
         }
       }
       console.log(this.wordsUsed);
+    });
+
+    storage.get('chartData').then((cData) => {
+      this.chartData = cData;
+    });
+
+    storage.get('gameData').then((gData) => {
+      this.gameData = gData;
     });
   }
 
@@ -105,6 +121,7 @@ export class ListRecallGamePage {
   timerEnded() {
     if(this.wordsShowing) {
       this.wordsShowing = false;
+      this.buttonText = 'Finish';
       document.getElementById('leftList').hidden = true;
       document.getElementById('rightList').hidden = true;
       document.getElementById('wordInput').hidden = false;
@@ -142,7 +159,7 @@ export class ListRecallGamePage {
     let endUsed = this.wordsUsed.length;
     let endGotten = this.wordsGotten.length;
     for(let i = 0; i < endUsed; i++) {
-      if(this.wordsUsed[i].toLowerCase() == text + '\u000d') {
+      if(this.wordsUsed[i] == text + '\u000d') {
         console.log('yes' + i);
         this.wordsGotten.push(this.wordsUsed[i]);
         this.wordsUsed.splice(i, 1);
@@ -161,6 +178,14 @@ export class ListRecallGamePage {
     }
   }
 
+  readyFinish() {
+    clearTimeout(this.countdownTimeout);
+    clearTimeout(this.startTimeTimeout);
+    clearTimeout(this.hexTimeout);
+    document.getElementById('countdown').hidden = true;
+    this.timerEnded();
+  }
+
   getScore() {
     return this.wordsGotten.length;
   }
@@ -173,9 +198,13 @@ export class ListRecallGamePage {
   }
 
   end() {
+    if(this.gameData['List Recall'].highScore < this.wordsGotten.length){
+      this.gameData['List Recall'].highScore = this.wordsGotten.length;
+      this.storage.set('gameData', this.gameData);
+    }
     let alert = this.alertController.create({
       title: 'Finished!',
-      subTitle: 'Your score was ' + this.wordsGotten.length,
+      message: 'Your score was ' + this.wordsGotten.length,
       buttons: ['Sweet!'],
       cssClass: 'alert',
     });
