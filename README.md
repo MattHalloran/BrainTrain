@@ -7,14 +7,14 @@ it will always be free to use.
 
 Here are some screenshots from the app
 
-![Home screenshot](src/assets/imgs/ScreenshotHome.png)
+![Home screenshot](https://i.imgur.com/RHNe4HP.png)
 
-![Exercises Screenshot](src/assets/imgs/ScreenshotExercises.png)
+![Exercises Screenshot](https://imgur.com/2JXH1Yy)
 
-![Bird's Eye Screenshot](src/assets/imgs/ScreenshotBirdsEye.png)
+![Bird's Eye Screenshot](https://i.imgur.com/t2f9fWG.png)
 
-![Split Focus Screenshot](src/assets/imgs/ScreenshotSplitFocus.png)
+![Split Focus Screenshot](https://i.imgur.com/aCRk83a.png)
 
-![Target Find Screenshot](src/assets/imgs/ScreenshotTargetFind.png)
+![Target Find Screenshot](https://i.imgur.com/chqlqmf.png)
 
 Questions and comments about this app can be sent to my school email: Halloranm8@students.rowan.edu
