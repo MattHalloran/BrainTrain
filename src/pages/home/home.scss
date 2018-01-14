@@ -17,8 +17,3 @@ page-home {
   height: 20px;
   vertical-align: bottom;
 }
-
-.card .card-header {
-  background-color: map-get($colors, accent);
-  color: map-get($colors, thirdTextColor) !important;
-}

@@ -24,12 +24,14 @@ export class BirdsEyeGamePage {
   targetBirdNum = 0;
 
   level = '1';
+  levelInt = 0;
   birdBaseFile = 'assets/imgs/birds-eye-game/BirdsEyeLevel'
   birdWidth = 90; //default bird width
   birdHeight = 90; //default bird height
 
   canClick = false;
 
+  //allow for game to be exited at any time without messing up upon return
   countdownTimeout;
   startTimeTimeout;
   displayTimeout;
@@ -38,7 +40,7 @@ export class BirdsEyeGamePage {
   gameData;
 
   countdown = '3';
-  currentMilliPos = 8;//change to get this value from last game played
+  currentMilliPos = 8;//default position
   lastCorrect = false; //used so currentMilli is upped every time the user gets it right twice in a row
   totalCorrect = 0;
   timesLeft = 40;
@@ -50,6 +52,7 @@ export class BirdsEyeGamePage {
       this.birdPositions[i] = new Array(2);
     }
     let level = navParams.get('range') + '';
+    this.levelInt = parseInt(level)-1;
     this.background = 'birdBackground' + level;
     platform.ready().then(() => {
       statusBar.hide();
@@ -61,7 +64,7 @@ export class BirdsEyeGamePage {
 
     storage.get('gameData').then((gData) => {
       this.gameData = gData;
-      this.currentMilliPos = this.gameData['Bird\'s Eye'].lastMilliPos;
+      this.currentMilliPos = this.gameData['Bird\'s Eye'].lastMilliPos[this.levelInt];
     });
   }
 
@@ -279,10 +282,10 @@ export class BirdsEyeGamePage {
   * Ends level, shows stats in popup, and updates user data
   */
   end() { //save score with sqlite or data file
-    if(this.gameData['Bird\'s Eye'].highScore[parseInt(this.level)-1] < this.totalCorrect) {
-      this.gameData['Bird\'s Eye'].highScore[parseInt(this.level)-1] = this.totalCorrect;
-      this.storage.set('gameData', this.gameData);
-    }
+    if(this.gameData['Bird\'s Eye'].highScore[this.levelInt] < this.totalCorrect)
+      this.gameData['Bird\'s Eye'].highScore[this.levelInt] = this.totalCorrect;
+    this.gameData['Bird\'s Eye'].lastMilliPos[this.levelInt] = this.currentMilliPos;
+    this.storage.set('gameData', this.gameData);
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.totalCorrect,

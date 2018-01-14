@@ -17,7 +17,7 @@ export class TargetFindGamePage {
   objectPositions = new Array(12);
   objectDirections = new Array(12);
   allTargetNums = [1, 2, 3, 4, 5, 6];
-  currentTargetNum = 2;//change to get this value from last game played
+  currentTargetNum = 2;//default target num
   currentMovingObjects = 2; //used to reduce redundancy
   targetsLeftToClick = 2;
 
@@ -25,6 +25,7 @@ export class TargetFindGamePage {
   speed = 18 //36 = slow, 18 = fast
 
   level = '11'; //default level
+  levelInt = 0;//default level index in game data
   objectWidth = 50; //default object width
   objectHeight = 50; //default object height
   maxX;
@@ -36,6 +37,7 @@ export class TargetFindGamePage {
   canClick = false;
 
   countdown = '3';
+  //allow for game to be exited at any time without messing up upon return
   countdownTimeout;
   objectTimeout;
   moveTimeout;
@@ -53,8 +55,18 @@ export class TargetFindGamePage {
     for (var i = 0; i < endFor; i++) {
       this.objectPositions[i] = new Array(2);
     }
+
     this.level = navParams.get('level');
     this.background = 'targetBackground' + this.level.charAt(0);
+    if(this.level = '12')
+      this.levelInt = 0;
+    else if(this.level = '11')
+      this.levelInt = 1;
+    else if(this.level = '21')
+      this.levelInt = 2;
+    else
+      this.levelInt = 3;
+
     this.targetSpeed = parseInt(this.level.charAt(1));
     this.speed*=this.targetSpeed;
     platform.ready().then(() => {
@@ -67,7 +79,7 @@ export class TargetFindGamePage {
 
     storage.get('gameData').then((gData) => {
       this.gameData = gData;
-      this.currentTargetNum = this.gameData['Target Find'].lastTargetNum;
+      this.currentTargetNum = this.gameData['Target Find'].lastTargetNum[this.levelInt];
     });
 
     this.maxX = this.platform.width()-this.objectWidth;
@@ -351,11 +363,11 @@ export class TargetFindGamePage {
   * Ends game
   */
   end() {
-    if(this.gameData['Target Find'].highScore < this.totalCorrect) {
-      this.gameData['Target Find'].highScore = this.totalCorrect;
-    }
-    this.gameData['Target Find'].lastTargetNum = this.currentTargetNum;
+    if(this.gameData['Target Find'].highScore[this.levelInt] < this.totalCorrect)
+      this.gameData['Target Find'].highScore[this.levelInt] = this.totalCorrect;
+    this.gameData['Target Find'].lastTargetNum[this.levelInt] = this.currentTargetNum;
     this.storage.set('gameData', this.gameData);
+
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.totalCorrect,
@@ -363,6 +375,7 @@ export class TargetFindGamePage {
       cssClass: 'alert',
     });
     alert.present();
+
     this.navCtrl.pop();
   }
 

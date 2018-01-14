@@ -26,6 +26,8 @@ export class SplitFocusGamePage {
   countdown = '3';
 
   canClick = false;
+
+  //allow for game to be exited at any time without messing up upon return
   countdownTimeout;
   totalTimeout;
   sleepTimeout;
@@ -55,8 +57,7 @@ export class SplitFocusGamePage {
 
     storage.get('gameData').then((gData) => {
       this.gameData = gData;
-      this.currentMilliPos = this.gameData['Split Focus'].lastMilliPos;
-      console.log(this.gameData['Split Focus'].lastMilliPos);
+      this.currentMilliPos = this.gameData['Split Focus'].lastMilliPos[this.levelTypeInt];
     });
    }
 
@@ -359,7 +360,7 @@ export class SplitFocusGamePage {
   * Ends game
   */
   end() {
-    this.gameData['Split Focus'].lastMilliPos = this.currentMilliPos;
+    this.gameData['Split Focus'].lastMilliPos[this.levelTypeInt] = this.currentMilliPos;
     if(this.gameData['Split Focus'].highScore[this.levelTypeInt] < this.totalCorrect)
       this.gameData['Split Focus'].highScore[this.levelTypeInt] = this.totalCorrect;
     this.storage.set('gameData', this.gameData);

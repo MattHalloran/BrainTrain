@@ -210,17 +210,7 @@ export class HomePage {
       }
 
     });
-    document.getElementById('myChart').style.height = this.getHeight() + 'px';
-    //this.lineChart.update();
-  }
-
-  getHeight() {
-    return this.platform.height()/5*3;
-  }
-
-  getLevel(game: string) {
-  //  var levelGet = this.storage.get(game.replace('\'', '') + 'MaxLevel');
-    return 0;//temp
+    document.getElementById('chartContainer').style.height = this.platform.height()*0.7 + 'px';
   }
 
   getHighScore(game: string) {
@@ -231,25 +221,14 @@ export class HomePage {
     }
   }
 
-  toggleWeekly() { //no way to put these 3 into one function because dot notation doesn't accept variable evaluations
+  toggleWeekly() { //no way to put these 2 into one function because dot notation doesn't accept variable evaluations
       if(this.weeklyArrow == 'assets/imgs/rightArrow.png') {
         this.weeklyArrow = 'assets/imgs/downArrow.png';
-        document.getElementById('weekly').hidden = false;
+        document.getElementById('chartContainer').hidden = false;
       }
       else {
         this.weeklyArrow = 'assets/imgs/rightArrow.png';
-        document.getElementById('weekly').hidden = true;
-      }
-  }
-
-  toggleOverall() {
-      if(this.overallArrow == 'assets/imgs/rightArrow.png') {
-        this.overallArrow = 'assets/imgs/downArrow.png';
-        document.getElementById('overall').hidden = false;
-      }
-      else {
-        this.overallArrow = 'assets/imgs/rightArrow.png';
-        document.getElementById('overall').hidden = true;
+        document.getElementById('chartContainer').hidden = true;
       }
   }
 

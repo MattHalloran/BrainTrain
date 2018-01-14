@@ -17,6 +17,7 @@ export class ListRecallGamePage {
   timer = 120; //seconds left to memeorize or recall
   countdown = '3';
 
+  //allow for game to be exited at any time without messing up upon return
   countdownTimeout;
   startTimeTimeout;
   hexTimeout;
