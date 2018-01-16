@@ -366,7 +366,9 @@ export class TargetFindGamePage {
     if(this.gameData['Target Find'].highScore[this.levelInt] < this.totalCorrect)
       this.gameData['Target Find'].highScore[this.levelInt] = this.totalCorrect;
     this.gameData['Target Find'].lastTargetNum[this.levelInt] = this.currentTargetNum;
+    this.chartData['Target Find'].data[6]++;
     this.storage.set('gameData', this.gameData);
+    this.storage.set('chartData', this.chartData);
 
     let alert = this.alertController.create({
       title: 'Finished!',

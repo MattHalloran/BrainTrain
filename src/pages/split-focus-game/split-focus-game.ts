@@ -363,7 +363,9 @@ export class SplitFocusGamePage {
     this.gameData['Split Focus'].lastMilliPos[this.levelTypeInt] = this.currentMilliPos;
     if(this.gameData['Split Focus'].highScore[this.levelTypeInt] < this.totalCorrect)
       this.gameData['Split Focus'].highScore[this.levelTypeInt] = this.totalCorrect;
+    this.chartData['Split Focus'].data[6]++;
     this.storage.set('gameData', this.gameData);
+    this.storage.set('chartData', this.chartData);
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.totalCorrect,

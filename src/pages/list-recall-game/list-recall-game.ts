@@ -203,6 +203,8 @@ export class ListRecallGamePage {
       this.gameData['List Recall'].highScore = this.wordsGotten.length;
       this.storage.set('gameData', this.gameData);
     }
+    this.chartData['List Recall'].data[6]++;
+    this.storage.set('chartData', this.chartData);
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.wordsGotten.length,

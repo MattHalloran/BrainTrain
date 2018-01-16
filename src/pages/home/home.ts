@@ -20,32 +20,69 @@ export class HomePage {
   overallArrow = 'assets/imgs/downArrow.png';
   highArrow = 'assets/imgs/downArrow.png';
 
+  d = new Date();
+  day;
+  lastMilli;
+  week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   chartData;
   chartDataArray = new Array(4);
   gameData;
 
   constructor(public navCtrl: NavController, public storage: Storage, public platform: Platform, public alertController: AlertController){
+    this.day = this.d.getDay();
+
     storage.get('chartData').then((cData) => {
       if(cData == undefined) {
         this.chartData = {
           "Bird's Eye": {
-            "data": [1, 2, 3, 4, 5, 6, 7]
+            "data": [0, 0, 0, 0, 0, 0, 0]
           },
           "List Recall": {
-            "data": [7, 6, 5, 4, 3, 2, 1]
+            "data": [0, 0, 0, 0, 0, 0, 0]
           },
           "Split Focus": {
-            "data": [3, 3, 3, 3, 3, 3, 3]
+            "data": [0, 0, 0, 0, 0, 0, 0]
           },
           "Target Find": {
-            "data": [0, 6, 1, 7, 3, 2, 8]
-          }
+            "data": [0, 0, 0, 0, 0, 0, 0]
+          },
+          "Day": 0,
+          "Day Label": ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday", "Sunday"]
         };
-        storage.set('chartData', this.chartData);
+        //storage.set('chartData', this.chartData);
+        this.lastMilli = this.d.getTime();
       }
-      else
-        this.chartData = cData;
-      this.setupChart();
+      else {
+        //this.chartData = cData;
+        // let end = this.games.length;
+        // this.chartData = cData;
+        // if(this.d.getTime() - this.lastMilli >= 604800000){ //one week has elapsed since last time opened
+        //   for(let i = 0; i < end; i++) {
+        //     this.chartData[this.games[i]] = [0, 0, 0, 0, 0, 0, 0];
+        //   }
+        // }
+        // else {
+        //   if(this.day != cData['Day']) {
+        //     let dayDifference = cData['Day'] - this.day; //days since last opened
+        //     this.chartData['Day'] = this.day;
+        //     for(let i = 0; i < end; i++) {
+        //         for(let j = 0; j < 6-dayDifference; j++) {
+        //             this.chartData[i][j] = this.chartData[i][j+dayDifference];
+        //         }
+        //     }
+        //   }
+        // }
+        // this.lastMilli = this.d.getTime();
+
+      }
+      // for(let i = 0; i < 7; i++) {
+      //   this.week[i] = cData['Day Label'][(i+this.day)%7];
+      // }
+      console.log('constructor chartData' + this.chartData);
+      storage.set('chartData', this.chartData).then(() => {
+        this.updateChart();
+      });//temp
+      //this.setupChart();
     });
 
     storage.get('gameData').then((gData) => {
@@ -79,15 +116,7 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    //causes weird chart glitches
-    // this.storage.get('chartData').then((cData) => {
-    //   console.log(cData);
-    //   console.log(this.chartData);
-    //   if(this.chartData != cData) {
-    //     this.chartData = cData;
-    //     this.setupChart();
-    //   }
-    // });
+    this.updateChart();
 
     this.storage.get('gameData').then((gData) => {
       this.gameData = gData;
@@ -95,6 +124,7 @@ export class HomePage {
   }
 
   setupChart() {
+    console.log('started setup');
     for(let i = 0; i < this.games.length; i++) {
       try {
         this.chartDataArray[i] = this.chartData[this.games[i]].data;
@@ -105,7 +135,7 @@ export class HomePage {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        labels: this.week,//was this.chartData['Day Label']
         datasets: [
           {
             label: " Bird's Eye ",
@@ -204,6 +234,7 @@ export class HomePage {
               yAxes: [{
                   ticks: {
                       min: 0,
+                      stepSize: 1,
                   }
               }]
           }
@@ -211,6 +242,40 @@ export class HomePage {
 
     });
     document.getElementById('chartContainer').style.height = this.platform.height()*0.7 + 'px';
+  }
+
+  updateChart() {
+    this.day = this.d.getDay();
+    this.storage.get('chartData').then((cData) => {
+      for(let i = 0; i < 7; i++) {
+        this.week[i] = cData['Day Label'][(i+this.day)%7];
+      }
+      console.log('cData' + cData);
+      let end = this.games.length;
+      this.chartData = cData;
+      if(this.d.getTime() - this.lastMilli >= 604800000){ //over one week has elapsed since last time opened
+        console.log('over a week passed');
+        for(let i = 0; i < end; i++) {
+          this.chartData[this.games[i]] = [0, 0, 0, 0, 0, 0, 0];
+        }
+      }
+      else {
+        if(this.day != cData['Day']) {
+          console.log('not the same day')
+          let dayDifference = cData['Day'] - this.day; //days since last opened
+          this.chartData['Day'] = this.day;
+          for(let i = 0; i < end; i++) {
+              for(let j = 0; j < 6-dayDifference; j++) {
+                  this.chartData[i][j] = this.chartData[i][j+dayDifference];
+              }
+          }
+        }
+      }
+      this.lastMilli = this.d.getTime();
+      console.log('got here' + this.chartData);
+      this.storage.set('chartData', this.chartData);
+      this.setupChart();
+    });
   }
 
   getHighScore(game: string) {

@@ -285,7 +285,9 @@ export class BirdsEyeGamePage {
     if(this.gameData['Bird\'s Eye'].highScore[this.levelInt] < this.totalCorrect)
       this.gameData['Bird\'s Eye'].highScore[this.levelInt] = this.totalCorrect;
     this.gameData['Bird\'s Eye'].lastMilliPos[this.levelInt] = this.currentMilliPos;
+    this.chartData['Bird\'s Eye'].data[6]++;
     this.storage.set('gameData', this.gameData);
+    this.storage.set('chartData', this.chartData);
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.totalCorrect,
