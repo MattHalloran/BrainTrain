@@ -29,8 +29,6 @@ export class HomePage {
   gameData;
 
   constructor(public navCtrl: NavController, public storage: Storage, public platform: Platform, public alertController: AlertController){
-    this.day = this.d.getDay();
-
     storage.get('chartData').then((cData) => {
       if(cData == undefined) {
         this.chartData = {
@@ -52,37 +50,10 @@ export class HomePage {
         //storage.set('chartData', this.chartData);
         this.lastMilli = this.d.getTime();
       }
-      else {
-        //this.chartData = cData;
-        // let end = this.games.length;
-        // this.chartData = cData;
-        // if(this.d.getTime() - this.lastMilli >= 604800000){ //one week has elapsed since last time opened
-        //   for(let i = 0; i < end; i++) {
-        //     this.chartData[this.games[i]] = [0, 0, 0, 0, 0, 0, 0];
-        //   }
-        // }
-        // else {
-        //   if(this.day != cData['Day']) {
-        //     let dayDifference = cData['Day'] - this.day; //days since last opened
-        //     this.chartData['Day'] = this.day;
-        //     for(let i = 0; i < end; i++) {
-        //         for(let j = 0; j < 6-dayDifference; j++) {
-        //             this.chartData[i][j] = this.chartData[i][j+dayDifference];
-        //         }
-        //     }
-        //   }
-        // }
-        // this.lastMilli = this.d.getTime();
-
-      }
-      // for(let i = 0; i < 7; i++) {
-      //   this.week[i] = cData['Day Label'][(i+this.day)%7];
-      // }
-      console.log('constructor chartData' + this.chartData);
+      console.log('constructor chartData day label' + this.chartData['Day Label']);
       storage.set('chartData', this.chartData).then(() => {
         this.updateChart();
-      });//temp
-      //this.setupChart();
+      });
     });
 
     storage.get('gameData').then((gData) => {
@@ -135,7 +106,7 @@ export class HomePage {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: this.week,//was this.chartData['Day Label']
+        labels: this.week,
         datasets: [
           {
             label: " Bird's Eye ",
@@ -247,12 +218,12 @@ export class HomePage {
   updateChart() {
     this.day = this.d.getDay();
     this.storage.get('chartData').then((cData) => {
-      for(let i = 0; i < 7; i++) {
-        this.week[i] = cData['Day Label'][(i+this.day)%7];
-      }
       console.log('cData' + cData);
       let end = this.games.length;
       this.chartData = cData;
+      for(let i = 0; i < 7; i++) {
+        this.week[i] = cData['Day Label'][(i+this.day)%7];
+      }
       if(this.d.getTime() - this.lastMilli >= 604800000){ //over one week has elapsed since last time opened
         console.log('over a week passed');
         for(let i = 0; i < end; i++) {
@@ -262,17 +233,24 @@ export class HomePage {
       else {
         if(this.day != cData['Day']) {
           console.log('not the same day')
-          let dayDifference = cData['Day'] - this.day; //days since last opened
+          let dayDifference = this.day - cData['Day']; //days since last opened
+          console.log(dayDifference);
+          if(dayDifference < 0)
+            dayDifference+=7;
           this.chartData['Day'] = this.day;
           for(let i = 0; i < end; i++) {
-              for(let j = 0; j < 6-dayDifference; j++) {
-                  this.chartData[i][j] = this.chartData[i][j+dayDifference];
+              for(let j = 0; j < 7-dayDifference; j++) {
+                console.log('goes through loop' + this.chartData[this.games[i]].data[j] + ' ' + this.chartData[this.games[i]].data[j]);
+                  this.chartData[this.games[i]].data[j] = cData[this.games[i]].data[j+dayDifference];
+              }
+              for(let j = 7-dayDifference; j < 7; j++) {
+                this.chartData[this.games[i]].data[j] = 0;
               }
           }
         }
       }
       this.lastMilli = this.d.getTime();
-      console.log('got here' + this.chartData);
+      console.log('got here' + this.chartData[this.games[2]]);
       this.storage.set('chartData', this.chartData);
       this.setupChart();
     });
