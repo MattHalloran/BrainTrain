@@ -2,10 +2,6 @@ page-home {
 
 }
 
-.items {
-  //background-color: map-get($colors, lightPrimary);
-}
-
 .header {
   font-size: 1em;
   color: map-get($colors, textColor);
@@ -16,4 +12,11 @@ page-home {
   width: 20px;
   height: 20px;
   vertical-align: bottom;
+}
+
+.scores {
+  text-align: left;
+  white-space:pre-wrap;
+  font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+  font-weight: normal;
 }

@@ -20,7 +20,7 @@ export class HomePage {
   overallArrow = 'assets/imgs/downArrow.png';
   highArrow = 'assets/imgs/downArrow.png';
 
-  d = new Date();
+  //d = new Date();
   day;
   lastMilli;
   week = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
@@ -48,9 +48,8 @@ export class HomePage {
           "Day Label": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         };
         //storage.set('chartData', this.chartData);
-        this.lastMilli = this.d.getTime();
+        //this.lastMilli = this.d.getTime();
       }
-      console.log('constructor chartData day label' + this.chartData['Day Label']);
       storage.set('chartData', this.chartData).then(() => {
         this.updateChart();
       });
@@ -61,18 +60,22 @@ export class HomePage {
         this.gameData = {
           "Bird's Eye": {
             "highScore": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "levelNames": ["Level 1: ", "Level 2: ", "Level 3: ", "Level 4: ", "Level 5: ", "Level 6: " , "Level 7: ", "Level 8: ", "Level 9: ", "Level 10: "],
             "highestLevel": 1,
             "lastMilliPos": [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
           },
           "List Recall": {
-            "highScore": 0
+            "highScore": [0],
+            "levelNames": [""]
           },
           "Split Focus": {
             "highScore": [0, 0, 0],
+            "levelNames": ["Color Match: ", "Shape Match: ", "Shape and Color Match: "],
             "lastMilliPos":[8, 8, 8]
           },
           "Target Find": {
             "highScore": [0, 0, 0, 0],
+            "levelNames": ["World 1 Slow: ", "World 1 Fast: ", "World 2 Slow: ", "World 2 Fast: "],
             "lastTargetNum": [2, 2, 2, 2]
           }
         };
@@ -95,7 +98,6 @@ export class HomePage {
   }
 
   setupChart() {
-    console.log('started setup');
     for(let i = 0; i < this.games.length; i++) {
       try {
         this.chartDataArray[i] = this.chartData[this.games[i]].data;
@@ -216,31 +218,27 @@ export class HomePage {
   }
 
   updateChart() {
-    this.day = this.d.getDay();
+    let d = new Date();
+    this.day = d.getDay();
     this.storage.get('chartData').then((cData) => {
-      console.log('cData' + cData);
       let end = this.games.length;
       this.chartData = cData;
       for(let i = 0; i < 7; i++) {
         this.week[i] = cData['Day Label'][(i+this.day)%7];
       }
-      if(this.d.getTime() - this.lastMilli >= 604800000){ //over one week has elapsed since last time opened
-        console.log('over a week passed');
+      if(d.getTime() - this.lastMilli >= 604800000){ //over one week has elapsed since last time opened
         for(let i = 0; i < end; i++) {
           this.chartData[this.games[i]] = [0, 0, 0, 0, 0, 0, 0];
         }
       }
       else {
         if(this.day != cData['Day']) {
-          console.log('not the same day')
           let dayDifference = this.day - cData['Day']; //days since last opened
-          console.log(dayDifference);
           if(dayDifference < 0)
             dayDifference+=7;
           this.chartData['Day'] = this.day;
           for(let i = 0; i < end; i++) {
               for(let j = 0; j < 7-dayDifference; j++) {
-                console.log('goes through loop' + this.chartData[this.games[i]].data[j] + ' ' + this.chartData[this.games[i]].data[j]);
                   this.chartData[this.games[i]].data[j] = cData[this.games[i]].data[j+dayDifference];
               }
               for(let j = 7-dayDifference; j < 7; j++) {
@@ -249,8 +247,7 @@ export class HomePage {
           }
         }
       }
-      this.lastMilli = this.d.getTime();
-      console.log('got here' + this.chartData[this.games[2]]);
+      this.lastMilli = d.getTime();
       this.storage.set('chartData', this.chartData);
       this.setupChart();
     });
@@ -258,9 +255,14 @@ export class HomePage {
 
   getHighScore(game: string) {
     try {
-      return game + ': ' + this.gameData[game].highScore;
+      let end = this.gameData[game].highScore.length;
+      let s = game + '\n';
+      for(let i = 0; i < end; i++) {
+        s += this.gameData[game].levelNames[i] + this.gameData[game].highScore[i] + '\n';
+      }
+      return s + '\n';
     } catch(err) {
-      return game + ': ' + 0;
+
     }
   }
 

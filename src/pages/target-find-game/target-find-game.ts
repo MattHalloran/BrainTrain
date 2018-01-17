@@ -23,7 +23,6 @@ export class TargetFindGamePage {
 
   targetSpeed = 1;//changes based on level
   speed = 18 //36 = slow, 18 = fast
-
   level = '11'; //default level
   levelInt = 0;//default level index in game data
   objectWidth = 50; //default object width
@@ -58,11 +57,11 @@ export class TargetFindGamePage {
 
     this.level = navParams.get('level');
     this.background = 'targetBackground' + this.level.charAt(0);
-    if(this.level = '12')
+    if(this.level == '12')
       this.levelInt = 0;
-    else if(this.level = '11')
+    else if(this.level == '11')
       this.levelInt = 1;
-    else if(this.level = '21')
+    else if(this.level == '22')
       this.levelInt = 2;
     else
       this.levelInt = 3;

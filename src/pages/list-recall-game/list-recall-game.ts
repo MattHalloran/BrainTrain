@@ -200,8 +200,8 @@ export class ListRecallGamePage {
   }
 
   end() {
-    if(this.gameData['List Recall'].highScore < this.wordsGotten.length){
-      this.gameData['List Recall'].highScore = this.wordsGotten.length;
+    if(this.gameData['List Recall'].highScore[0] < this.wordsGotten.length){
+      this.gameData['List Recall'].highScore[0] = this.wordsGotten.length;
       this.storage.set('gameData', this.gameData);
     }
     this.chartData['List Recall'].data[6]++;

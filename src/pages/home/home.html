@@ -10,7 +10,9 @@
       <canvas #lineCanvas id="myChart"></canvas>
     </div>
   <h5><ion-list-header class="header" (click)="toggleHigh()">High Scores <img id="highArrow" [src]="highArrow" class="arrows"></ion-list-header></h5>
-    <h6><ion-list id="high">
-      <ion-item *ngFor="let game of games" class="items">{{getHighScore(game)}}</ion-item>
-    </ion-list></h6>
+    <!-- <h6><ion-list id="high"> -->
+    <h5><div id="high">
+      <div *ngFor="let game of games" class="scores">{{getHighScore(game)}}</div>
+    </div></h5>
+    <!-- </ion-list></h6> -->
 </ion-content>
