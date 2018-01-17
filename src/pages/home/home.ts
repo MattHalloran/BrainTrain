@@ -23,7 +23,7 @@ export class HomePage {
   d = new Date();
   day;
   lastMilli;
-  week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  week = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
   chartData;
   chartDataArray = new Array(4);
   gameData;
@@ -45,7 +45,7 @@ export class HomePage {
             "data": [0, 0, 0, 0, 0, 0, 0]
           },
           "Day": 0,
-          "Day Label": ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday", "Sunday"]
+          "Day Label": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         };
         //storage.set('chartData', this.chartData);
         this.lastMilli = this.d.getTime();

@@ -20,7 +20,7 @@ export class BirdsEyeGamePage {
   birds = [0, 1, 2, 3, 4, 5, 6 ,7];//Yes, this is the only way to do this
   birdPositions = new Array(12);
   allMillis = [2000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000,
-              750, 600, 500, 400, 310, 230, 180, 130, 100, 75, 50, 45, 40, 35, 30];
+              750, 600, 500, 400, 310, 230, 180, 130, 100, 75];//sometimes birds don't appear at smaller times
   targetBirdNum = 0;
 
   level = '1';
@@ -28,6 +28,9 @@ export class BirdsEyeGamePage {
   birdBaseFile = 'assets/imgs/birds-eye-game/BirdsEyeLevel'
   birdWidth = 90; //default bird width
   birdHeight = 90; //default bird height
+
+  maxWidth;
+  maxHeight;
 
   canClick = false;
 
@@ -47,6 +50,9 @@ export class BirdsEyeGamePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController)
   {
+    this.maxWidth = this.platform.width()-this.birdWidth;
+    this.maxHeight = this.platform.height()-this.birdHeight;
+
     let endFor = this.birdPositions.length
     for (var i = 0; i < endFor; i++) {
       this.birdPositions[i] = new Array(2);
@@ -109,7 +115,10 @@ export class BirdsEyeGamePage {
   * Helper method for countdownStart()
   */
   goHelper() {
-    this.countdownTimeout = setTimeout(() => { document.getElementById('countdown').hidden = true; this.startTime() }, 200);
+    this.countdownTimeout = setTimeout(() => {
+      document.getElementById('countdown').hidden = true;
+      this.startTime();
+    }, 200);
   }
 
   /**
@@ -121,7 +130,7 @@ export class BirdsEyeGamePage {
     }
     else {
       this.loadBirds();
-      this.startTimeTimeout = setTimeout(() => { this.hideBirds(); this.canClick = true;}, this.allMillis[this.currentMilliPos]);
+       this.startTimeTimeout = setTimeout(() => { this.hideBirds(); this.canClick = true;}, this.allMillis[this.currentMilliPos]);
     }
   }
 
@@ -131,15 +140,16 @@ export class BirdsEyeGamePage {
   loadBirds() {
     this.canClick = false;
     this.targetBirdNum = Math.floor(Math.random()*8);
-    var maxWidth = this.platform.width()-this.birdWidth;
+    let maxWidth = this.maxWidth;
     var minHeight = 90;
-    var maxHeight = this.platform.height()-this.birdHeight;
-    var birdWidth = this.birdWidth;
-    var birdHeight = this.birdHeight;
-    var x;
-    var y;
+    let maxHeight = this.maxHeight;
+    let birdWidth = this.birdWidth;
+    let birdHeight = this.birdHeight;
+    let x;
+    let y;
 
-    for(let i = 0; i <= this.birds.length-1; i++) {
+    let end = this.birds.length
+    for(let i = 0; i < end; i++) {
       var bird = document.getElementById(i + '');
       var invalidSpot;
       do {

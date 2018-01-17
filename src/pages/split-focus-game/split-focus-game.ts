@@ -100,7 +100,10 @@ export class SplitFocusGamePage {
   * Helper method for countdownStart()
   */
   goHelper() {
-    this.countdownTimeout = setTimeout(() => { document.getElementById('countdown').hidden = true; this.startTime()}, 200);
+    this.countdownTimeout = setTimeout(() => {
+      document.getElementById('countdown').hidden = true;
+      this.startTime();
+    }, 200);
   }
 
   /**

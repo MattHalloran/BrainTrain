@@ -104,6 +104,7 @@ export class ListRecallGamePage {
       document.getElementById('countdown').hidden = true;
       document.getElementById('leftList').hidden = false;
       document.getElementById('rightList').hidden = false;
+      document.getElementById('readyFinish').hidden = false;
       this.startTime()
     }, 200);
   }
