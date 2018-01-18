@@ -16,6 +16,7 @@ export class ListRecallGamePage {
 
   timer = 120; //seconds left to memeorize or recall
   countdown = '3';
+  inCountdown = true;
 
   //allow for game to be exited at any time without messing up upon return
   countdownTimeout;
@@ -101,10 +102,10 @@ export class ListRecallGamePage {
   */
   goHelper() {
     this.countdownTimeout = setTimeout(() => {
+      this.inCountdown = false;
       document.getElementById('countdown').hidden = true;
       document.getElementById('leftList').hidden = false;
       document.getElementById('rightList').hidden = false;
-      document.getElementById('readyFinish').hidden = false;
       this.startTime()
     }, 200);
   }
@@ -182,10 +183,14 @@ export class ListRecallGamePage {
 
   readyFinish() {
     clearTimeout(this.countdownTimeout);
-    clearTimeout(this.startTimeTimeout);
-    clearTimeout(this.hexTimeout);
-    document.getElementById('countdown').hidden = true;
-    this.timerEnded();
+    if(this.inCountdown)
+      this.goHelper();
+    else {
+      clearTimeout(this.startTimeTimeout);
+      clearTimeout(this.hexTimeout);
+      document.getElementById('countdown').hidden = true;
+      this.timerEnded();
+    }
   }
 
   getScore() {

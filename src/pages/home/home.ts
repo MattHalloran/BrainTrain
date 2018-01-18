@@ -66,7 +66,7 @@ export class HomePage {
           },
           "List Recall": {
             "highScore": [0],
-            "levelNames": [""]
+            "levelNames": ["Words: "]
           },
           "Split Focus": {
             "highScore": [0, 0, 0],
@@ -111,7 +111,7 @@ export class HomePage {
         labels: this.week,
         datasets: [
           {
-            label: " Bird's Eye ",
+            label: "Bird's Eye",
             fill: false,
             lineTension: 0,
             backgroundColor: "rgba(0, 153, 51, 0.4)",
@@ -133,7 +133,7 @@ export class HomePage {
             spanGaps: false
           },
           {
-            label: "  Split Focus  ",
+            label: "List Recall",
             fill: false,
             lineTension: 0,
             backgroundColor: "rgba(204, 0, 0, 0.4)",
@@ -155,7 +155,7 @@ export class HomePage {
             spanGaps: false
           },
           {
-            label: "Target Find",
+            label: "Split Focus",
             fill: false,
             lineTension: 0,
             backgroundColor: "rgba(0, 51, 204, 0.4)",
@@ -177,7 +177,7 @@ export class HomePage {
             spanGaps: false
           },
           {
-            label: "Vision Sweep",
+            label: "TargetFind",
             fill: false,
             lineTension: 0,
             backgroundColor: "rgba(255, 153, 0, 0.4)",
@@ -210,7 +210,58 @@ export class HomePage {
                       stepSize: 1,
                   }
               }]
-          }
+          },
+          tooltips: {
+            backgroundColor: 'rgba(16, 104, 25, 0.8)',
+            callbacks: {
+                title: function(tooltipItem, chart) {
+                  console.log(tooltipItem[0]);
+                  let day = tooltipItem[0].xLabel;
+                  let s = '';
+                  switch(day) {
+                    case 'Mon':
+                      s = 'Monday';
+                      break;
+                    case 'Tue':
+                      s = 'Tuesday';
+                      break;
+                    case 'Wed':
+                      s = 'Wednesday';
+                      break;
+                    case 'Thu':
+                      s = 'Thursday';
+                      break;
+                    case 'Fri':
+                        s = 'Friday';
+                        break;
+                    case 'Sat':
+                      s = 'Saturday';
+                      break;
+                    case 'Sun':
+                      s = 'Sunday';
+                      break;
+                  }
+                  return s;
+                },
+                label: function(tooltipItem, chart) {
+                   console.log(chart);
+                   let gamesPlayed = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                   let singularPlural = 'game';
+                   if(gamesPlayed != 1)
+                    singularPlural += 's';
+                   return chart.datasets[tooltipItem.datasetIndex].label + ': ' + gamesPlayed + ' ' + singularPlural;
+                },
+                labelColor: function(tooltipItem, chart) {
+                    return {
+                        borderColor:  '#4CAF50',
+                        backgroundColor: '#4CAF50'
+                    }
+                },
+                labelTextColor:function(tooltipItem, chart) {
+                    return '#FFFFFF';
+                }
+            }
+        }
       }
 
     });
@@ -256,7 +307,7 @@ export class HomePage {
   getHighScore(game: string) {
     try {
       let end = this.gameData[game].highScore.length;
-      let s = game + '\n';
+      let s = '';
       for(let i = 0; i < end; i++) {
         s += this.gameData[game].levelNames[i] + this.gameData[game].highScore[i] + '\n';
       }
