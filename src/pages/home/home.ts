@@ -215,7 +215,6 @@ export class HomePage {
             backgroundColor: 'rgba(16, 104, 25, 0.8)',
             callbacks: {
                 title: function(tooltipItem, chart) {
-                  console.log(tooltipItem[0]);
                   let day = tooltipItem[0].xLabel;
                   let s = '';
                   switch(day) {
@@ -244,7 +243,6 @@ export class HomePage {
                   return s;
                 },
                 label: function(tooltipItem, chart) {
-                   console.log(chart);
                    let gamesPlayed = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                    let singularPlural = 'game';
                    if(gamesPlayed != 1)
