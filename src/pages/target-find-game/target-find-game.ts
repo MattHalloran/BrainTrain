@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
+import { AdMobFree } from '@ionic-native/admob-free';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
 
@@ -49,7 +50,7 @@ export class TargetFindGamePage {
   totalCorrect = 0;
   timesLeft = 10;
 
-  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController) {
+  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController, public adMob: AdMobFree) {
     let endFor = this.objectPositions.length
     for (var i = 0; i < endFor; i++) {
       this.objectPositions[i] = new Array(2);
@@ -70,6 +71,7 @@ export class TargetFindGamePage {
     this.speed*=this.targetSpeed;
     platform.ready().then(() => {
       statusBar.hide();
+      this.adMob.banner.hide();
     });
 
     storage.get('chartData').then((cData) => {
@@ -377,6 +379,7 @@ export class TargetFindGamePage {
     });
     alert.present();
 
+    this.adMob.banner.show();
     this.navCtrl.pop();
   }
 

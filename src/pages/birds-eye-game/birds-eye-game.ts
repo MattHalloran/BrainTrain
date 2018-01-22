@@ -1,8 +1,9 @@
 //Matt Halloran
-//1-2-17
+//1-21-17
 
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
+import { AdMobFree} from '@ionic-native/admob-free';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -48,7 +49,7 @@ export class BirdsEyeGamePage {
   totalCorrect = 0;
   timesLeft = 40;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController)
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController, public adMob: AdMobFree)
   {
     this.maxWidth = this.platform.width()-this.birdWidth;
     this.maxHeight = this.platform.height()-this.birdHeight;
@@ -62,6 +63,7 @@ export class BirdsEyeGamePage {
     this.background = 'birdBackground' + level;
     platform.ready().then(() => {
       statusBar.hide();
+      this.adMob.banner.hide();
     });
 
     storage.get('chartData').then((cData) => {
@@ -305,6 +307,7 @@ export class BirdsEyeGamePage {
       cssClass: 'alert',
     });
     alert.present();
+    this.adMob.banner.show();
     this.navCtrl.pop();
   }
 }

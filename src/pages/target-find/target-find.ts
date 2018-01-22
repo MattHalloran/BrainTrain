@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -9,7 +8,7 @@ import { Storage } from '@ionic/storage';
 })
 export class TargetFindPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
 
   }
 

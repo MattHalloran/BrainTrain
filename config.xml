@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.matthalloran.brain" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.matthalloran.mindyourbrain" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mind Your Brain</name>
     <description>Brain exercises designed to sharpen the mind and slow the onset of Alzheimer's Disease</description>
     <author email="halloranm8@students.rowan.edu" href="https://github.com/MattHalloran">Matt Halloran</author>

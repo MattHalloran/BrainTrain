@@ -3,6 +3,7 @@
 
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
+import { AdMobFree } from '@ionic-native/admob-free';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -38,7 +39,7 @@ export class SplitFocusGamePage {
   leftSource = '';
   rightSource = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController){
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public platform: Platform, public statusBar: StatusBar, public alertController: AlertController, public adMob: AdMobFree){
     this.levelType = navParams.get('level');
     if(this.levelType == 'matchingColor')
       this.levelTypeInt = 0;
@@ -49,6 +50,7 @@ export class SplitFocusGamePage {
 
     platform.ready().then(() => {
       statusBar.hide();
+      this.adMob.banner.hide();
     });
 
     storage.get('chartData').then((cData) => {
@@ -239,7 +241,6 @@ export class SplitFocusGamePage {
   * @param {s} The button clicked
   */
   clicked(s: string) {
-    console.log(this.canClick);
     if(this.canClick) {
       clearTimeout(this.totalTimeout);
       clearTimeout(this.sleepTimeout);
@@ -376,6 +377,7 @@ export class SplitFocusGamePage {
       cssClass: 'alert',
     });
     alert.present();
+    this.adMob.banner.show();
     this.navCtrl.pop();
 
   }

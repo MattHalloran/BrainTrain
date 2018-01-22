@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { AdMobFree } from '@ionic-native/admob-free';
 import { Storage } from '@ionic/storage';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -36,9 +37,10 @@ export class ListRecallGamePage {
 
   wordsShowing = true;
 
-  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http, public alertController: AlertController) {
+  constructor(public navCtrl: NavController, public storage: Storage, public navParams: NavParams, public platform: Platform, public statusBar: StatusBar, public http: Http, public alertController: AlertController, public adMob: AdMobFree) {
     platform.ready().then(() => {
       statusBar.hide();
+      this.adMob.banner.hide();
     });
 
     for(let i = 0; i < 2; i++) {
@@ -218,6 +220,7 @@ export class ListRecallGamePage {
       cssClass: 'alert',
     });
     alert.present();
+    this.adMob.banner.show();
     this.navCtrl.pop();
   }
 }

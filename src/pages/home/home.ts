@@ -1,5 +1,5 @@
 //Matt Halloran
-//1-3-17
+//1-21-17
 
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Platform, AlertController } from 'ionic-angular';
@@ -20,7 +20,6 @@ export class HomePage {
   overallArrow = 'assets/imgs/downArrow.png';
   highArrow = 'assets/imgs/downArrow.png';
 
-  //d = new Date();
   day;
   lastMilli;
   week = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
@@ -47,8 +46,6 @@ export class HomePage {
           "Day": 0,
           "Day Label": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         };
-        //storage.set('chartData', this.chartData);
-        //this.lastMilli = this.d.getTime();
       }
       storage.set('chartData', this.chartData).then(() => {
         this.updateChart();
@@ -87,6 +84,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+  //  setTimeout(() => { this.showBanner(); }, 1000);
   }
 
   ionViewWillEnter() {
@@ -201,7 +199,7 @@ export class HomePage {
         ]
       },
       options: {
-          maintainAspectRatio: false,//was false
+          maintainAspectRatio: false,
           animation:  false,
           scales: {
               yAxes: [{
@@ -263,7 +261,7 @@ export class HomePage {
       }
 
     });
-    document.getElementById('chartContainer').style.height = this.platform.height()*0.7 + 'px';
+    document.getElementById('chartContainer').style.height = this.platform.height()*0.6 + 'px';
   }
 
   updateChart() {
@@ -302,6 +300,9 @@ export class HomePage {
     });
   }
 
+  /**
+  * @return The high scores for each game
+  */
   getHighScore(game: string) {
     try {
       let end = this.gameData[game].highScore.length;
@@ -315,6 +316,9 @@ export class HomePage {
     }
   }
 
+  /**
+  * Hides or shows the weekly progress chart
+  */
   toggleWeekly() { //no way to put these 2 into one function because dot notation doesn't accept variable evaluations
       if(this.weeklyArrow == 'assets/imgs/rightArrow.png') {
         this.weeklyArrow = 'assets/imgs/downArrow.png';
@@ -326,6 +330,9 @@ export class HomePage {
       }
   }
 
+  /**
+  * Hides or shows the high scores
+  */
   toggleHigh() {
       if(this.highArrow == 'assets/imgs/rightArrow.png') {
         this.highArrow = 'assets/imgs/downArrow.png';

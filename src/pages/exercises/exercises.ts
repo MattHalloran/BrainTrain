@@ -7,7 +7,6 @@ import { NavController } from 'ionic-angular';
 @Component({
   selector: 'page-contact',
   templateUrl: 'exercises.html',
-  //name: 'ExercisesPage'
 })
 export class ExercisesPage {
 
