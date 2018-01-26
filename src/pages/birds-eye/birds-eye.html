@@ -26,8 +26,8 @@
   <ion-content padding>
       <form #v="ngForm">
           <ion-item>
-              <ion-range type="number" [(ngModel)]="myRange" name="myRange"
-               min = "1" max = "10" step = "1" snaps = "true">
+              <ion-range id="range" type="number" [(ngModel)]="myRange" name="myRange"
+               min="1" max={{getMax()}} step="1" snaps="true">
                   <ion-label range-left>Easy</ion-label>
                   <ion-label range-right>Hard</ion-label>
               </ion-range>

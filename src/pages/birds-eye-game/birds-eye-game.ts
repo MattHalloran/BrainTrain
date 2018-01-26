@@ -293,13 +293,17 @@ export class BirdsEyeGamePage {
   /**
   * Ends level, shows stats in popup, and updates user data
   */
-  end() { //save score with sqlite or data file
+  end() {
     if(this.gameData['Bird\'s Eye'].highScore[this.levelInt] < this.totalCorrect)
       this.gameData['Bird\'s Eye'].highScore[this.levelInt] = this.totalCorrect;
+    if(this.gameData['Bird\'s Eye'].highestLevel <= this.levelInt+1)//+1 because levelInt is also used for array indexes
+      this.gameData['Bird\'s Eye'].highestLevel++;
+
     this.gameData['Bird\'s Eye'].lastMilliPos[this.levelInt] = this.currentMilliPos;
     this.chartData['Bird\'s Eye'].data[6]++;
     this.storage.set('gameData', this.gameData);
     this.storage.set('chartData', this.chartData);
+
     let alert = this.alertController.create({
       title: 'Finished!',
       message: 'Your score was ' + this.totalCorrect,

@@ -3,6 +3,7 @@
 
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage({
   name: 'BirdsEyePage',
@@ -14,10 +15,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 export class BirdsEyePage {
 
+  max = "1";
 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-
+  ionViewWillEnter() {
+    this.storage.get('gameData').then((gData) => {
+      let level = gData['Bird\'s Eye'].highestLevel;
+      if(level >= 1 && level <= 10)
+        this.max = level + '';
+      else
+        this.max = 1 + '';
+      console.log(this.max + ' ' + level);
+    });
+    console.log(document.getElementById('range'));
   }
 
   ngOnInit(){
@@ -26,5 +38,9 @@ export class BirdsEyePage {
 
   public start(){
     this.navCtrl.push('BirdsEyeGamePage', {range: (this as any).myRange});
+  }
+
+  getMax() {
+    return this.max;
   }
 }

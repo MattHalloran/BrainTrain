@@ -365,9 +365,19 @@ export class SplitFocusGamePage {
   */
   end() {
     this.gameData['Split Focus'].lastMilliPos[this.levelTypeInt] = this.currentMilliPos;
+    this.chartData['Split Focus'].data[6]++;
     if(this.gameData['Split Focus'].highScore[this.levelTypeInt] < this.totalCorrect)
       this.gameData['Split Focus'].highScore[this.levelTypeInt] = this.totalCorrect;
-    this.chartData['Split Focus'].data[6]++;
+
+    let allCompleted = true;
+    for(let i = 0; i < this.gameData['Split Focus'].highScore.length; i++) {
+      if(this.gameData['Split Focus'].highScore[i] == 0)
+        allCompleted = false;
+    }
+    if(allCompleted) {
+      console.log('Achievement: finished all levels');
+    }
+
     this.storage.set('gameData', this.gameData);
     this.storage.set('chartData', this.chartData);
     let alert = this.alertController.create({

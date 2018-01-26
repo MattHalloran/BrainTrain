@@ -20,7 +20,7 @@ export class MyApp {
       }, 100);
 
       let bannerConfig: AdMobFreeBannerConfig = {
-          //isTesting: true,
+          isTesting: true,
           autoShow: true,
           id: 'ca-app-pub-5396418917905130/4137136894'
         };
